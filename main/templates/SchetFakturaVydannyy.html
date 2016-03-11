@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+	<title>Счет Фактура Выданный</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,400italic,700&subset=latin,cyrillic-ext' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet/less" type="text/css" href="{% static 'css/style.less'%}">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.0.0/less.js"></script>
+	</head>
+<body>
+	<div class="main-wrapper">
+<style type="text/css">
+	.zg{
+		display: block;
+		margin-top: 30px;
+	}
+</style>
+	<h1>Счет Фактура Выданный</h1>
+	<div class="form">
+		<p style="display:none;" id="id_obj">{{ obj.id }}</p>
+		<p style="display:none;" id="name_obj">SchetFakturaVydannyy</p>
+		<p><label class="token">Номер:{{SchetFakturaVydannyy.Nomer }}</label><label>от:</label>{{SchetFakturaVydannyy.Data }}</p>
+		<p><label>Организация:</label>{{SchetFakturaVydannyy.Organizatsiya }}<button class="btn btn-default btn-xs"id="Organizatsiyab">+</button></p>
+		<p><label>Контрагент:</label>{{SchetFakturaVydannyy.Kontragent }}<button class="btn btn-default btn-xs" id="Kontragen">+</button></p>
+		<p><label>Договор:</label>{{SchetFakturaVydannyy.DogovorKontragenta }}<button class="btn btn-default btn-xs" id="DogovorKontragent">+</button></p>
+		<p>{{SchetFakturaVydannyy.NaAvans }}<label>На аванс</label></p>
+
+		<span class="zg">Документ-основание счета фактуры</span>
+		<label>Основание:
+			<div class="selection">
+				<div class="ZakazPokupatelya">
+			        <div class="DokumentOsnovanieVozvratTovarovPostavschiku">{{ SchetFakturaVydannyy.DokumentOsnovanieVozvratTovarovPostavschiku }}</div>
+			        <div class="DokumentOsnovanieRealizatsiyaTovarovUslug">{{ SchetFakturaVydannyy.DokumentOsnovanieRealizatsiyaTovarovUslug }}</div>
+			    </div>
+				<div class="dropdown">
+						<button class="btn btn-default btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+						Выбрать
+						<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" aria-labelledby="dropdownMenu1" id="dropdownOsnovanie">
+							<li><a class="DokumentOsnovanieVozvratTovarovPostavschiku">Возврат товаров поставщику</a></li>
+							<li><a class="DokumentOsnovanieRealizatsiyaTovarovUslug">Реализация товаров и услуг</a></li>
+						</ul>
+					</div>
+			</div>
+		</label>
+		
+		<span class="zg">Платежно-рачсчетный документ</span>
+		
+		<p><label>Дата:{{SchetFakturaVydannyy.DataPlatezhnoRaschetnogoDokumenta }}</label><label>Номер:{{SchetFakturaVydannyy.NomerPlatezhnoRasschetnogoDokumenta }}</label></p>
+		<p>Всего: <span class="summaDoc"></span> .руб</p>
+		<p><label>Ответственный:</label>{{SchetFakturaVydannyy.Otvetstvennyy }}</p>
+		<p><label>Комментарий:</label>{{SchetFakturaVydannyy.Kommentariy }}</p>
+	</div>
+
+	<button class="saveObj btn btn-default btn-xs">Сохранить объект</button>
+
+
+	{# Строки Таблиц #}
+
+
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<script src="{% static 'js/docscript.js' %}"></script>
+<script src="{% static 'js/SchetFakturaVydannyy.js' %}"></script>
+</body>
+</html>

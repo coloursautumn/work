@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+    <head>
+        <meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Заказ Покупателя</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,400italic,700&subset=latin,cyrillic-ext' rel='stylesheet' type='text/css'>
+	    <link rel="stylesheet/less" type="text/css" href="{% static 'css/style.less'%}">
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.0.0/less.js"></script>
+    </head>
+    <body>
+        <div class="main-wrapper">
+        <h1>Заказ покупателя</h1>    
+        <div class="formTovary" style="display:none;"></div>
+        <div class="form">
+            
+            <p>Тип цен: {{ ZakazPokupatelyaForm.TipTSen }}</p>
+            <p style="display:none;" id="id_obj">{{ obj.id }}</p>
+            <p style="display:none;" id="name_obj">ZakazPokupatelya</p>
+            <p>
+                <label class="token">Номер: {{ ZakazPokupatelyaForm.Nomer }} </label>
+                <label for="">от:</label>{{ ZakazPokupatelyaForm.Data }}
+            </p>
+            <p>
+                <label for="">Организация:</label>{{ ZakazPokupatelyaForm.Organizatsiya }}<button class="btn btn-default btn-xs" id="Organizatsiyab">+</button>
+            </p>
+            <p>
+                <label for="">Контрагент:</label>{{ ZakazPokupatelyaForm.Kontragent }}<button class="btn btn-default btn-xs" id="Kontragen">+</button>
+            </p>
+            <p>
+                <label for="">Отгрузка:</label>{{ ZakazPokupatelyaForm.DataOtgruzki }}
+                <label for="">Оплата:</label>{{ ZakazPokupatelyaForm.DataOplaty }}
+            </p>
+            <p>
+                <label for="">Склад/Группа:</label>{{ ZakazPokupatelyaForm.SkladGruppa }}<button class="btn btn-default btn-xs" id="SkladGrupp">+</button>
+            </p>
+            <p>
+                <label for="">Договор:</label>{{ ZakazPokupatelyaForm.DogovorKontragenta }}<button class="btn btn-default btn-xs" id="DogovorKontragentab">+</button>
+            </p>
+            <p>
+                <span>по договороу</span>
+            </p>
+            <p>
+                <label for="">Б/счет.касса:</label>{{ ZakazPokupatelyaForm.StrukturnayaEdinitsa }}<button class="btn btn-default btn-xs" id="StrukturnayaEdinitsab">+</button>
+            </p>
+        </div>
+
+
+        <!-- вкладки -->
+
+
+        <div class="bs-example bs-example-tabs" data-example-id="togglable-tabs">
+            <ul id="myTabs" class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#Tovary" id="tovary-tab" role="tab" data-toggle="tab" aria-controls="tovary" aria-expanded="true">Товары</a></li>
+                <li role="presentation"><a href="#dopolnitelno" role="tab" id="dopolnitelno-tab" data-toggle="tab" aria-controls="dopolnitelno">Дополнительно</a></li>
+                <li role="presentation"><a href="#Uslugi" role="tab" id="uslugy-tab" data-toggle="tab" aria-controls="uslugy">Услуги</a></li>
+                <!-- <li role="presentation"><a href="#vozvratnaya_tara" role="tab" id="vozvratnaya_tara-tab" data-toggle="tab" aria-controls="vozvratnaya_tara">Возвратная тара</a></li> -->
+            </ul>
+
+
+            <div id="myTabContent" class="tab-content">
+
+
+            <!-- вкладка дополнительно -->
+
+
+                <div id="dopolnitelno" role="tabpanel" class="tab-pane fade" aria-labelledby="dopolnitelno-tab">
+                <div class="form">
+                    <p><label for="">Дисконтная карта:</label>{{ ZakazPokupatelyaForm.DiskontnayaKarta }}</p>
+                    <p><label for="">Подразделение:</label>{{ ZakazPokupatelyaForm.Podrazdelenie }}<button class="btn btn-default btn-xs" id="Podrazdelenieb">+</button></p>
+                    <p><label for="">Ответственный</label>{{ ZakazPokupatelyaForm.Otvetstvennyy }}</p>
+                    <p><label for="">Конт. лицо:</label>{{ ZakazPokupatelyaForm.KontaktnoeLitsoKontragenta}}<button class="btn btn-default btn-xs" id="KontaktnoeLitsoKontragentab">+</button></p>
+                    <p><label for="">Грузоотправитель:</label>{{ ZakazPokupatelyaForm.Gruzootpravitel }}<button class="btn btn-default btn-xs" id="Gruzootpravitelb">+</button></p>
+                    <p><label for="">Адрес доставки:</label>{{ ZakazPokupatelyaForm.AdresDostavki }}</p>
+                    <p><label for="">Основание:</label><label class="pasteInOsnovanie"></label>
+                    <div class="selection">
+                        <div class="ZakazPokupatelya">
+                            <div class="ZakazPostavschiku">{{ ZakazPokupatelyaForm.DokumentOsnovanieZakazPostavschiku}}</div>
+                            <div class="Sobytie">{{ ZakazPokupatelyaForm.DokumentOsnovanieSobytie}}</div>
+                            <div class="SchetNaOplatuPokupatelyu">{{ ZakazPokupatelyaForm.DokumentOsnovanieSchetNaOplatuPokupatelyu}}</div>
+                        </div>
+                        <div class="dropdown" id="ZakazPokupatelya">
+                            <button class="btn btn-default btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                              Выбрать
+                              <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" id="dropdownOsnovanie">
+                              <li><a class="ZakazPostavschiku">Заказ поставщику</a></li>
+                              <li><a class="Sobytie">Событие</a></li>
+                              <li><a class="SchetNaOplatuPokupatelyu">Счет на оплату покупателю</a></li>
+                            </ul>
+                        </div>
+                    </div></p>
+                    <p><label>События</label></p>
+                    <p><label for="">Грузополучатель:</label>{{ ZakazPokupatelyaForm.Gruzopoluchatel }}<button class="btn btn-default btn-xs" id="Gruzopoluchatelb">+</button></p>
+                    <p><label for="">Дополнение:</label>{{ ZakazPokupatelyaForm.DopolnenieKAdresuDostavki }}</p>
+                </div>
+                </div>
+
+
+                <!-- вкладка Товары -->
+
+
+                <div id="Tovary" role="tabpanel" class="tab-pane fade in active" aria-labelledby="tovary-tab">
+                    <div id="Tovary">
+                        <button class="add btn btn-default btn-xs" id="addTovar">Добавить</button>
+                        <button class="save btn btn-default btn-xs">Сохранить</button>
+                        <button class="del btn btn-default btn-xs">Удалить</button>
+                        
+                        <table border="1" class="able table table-hover">
+                            <tr>
+                                <td id="del" style="display:None;">Del</td>
+                                <td>№</td>
+						        <td>Номенклатура<button class="btn btn-default btn-xs" id="NomenklaturaTovar">+</button></td>
+                                <td>Количество</td>
+                                <td>Ед<button class="btn btn-default btn-xs" id="edinica">+</button></td>
+                                <td>К</td>
+                                <td>Цена</td>
+                                <td>Сумма без скидок</td>
+                                <td>% Руч.ск</td>
+                                <td>Сумма</td>
+                                <td>% НДС</td>
+                                <td>Сумма НДС</td>
+                                <td>Всего</td>
+                                <td>Размещение</td>
+                            </tr>
+                            {% for tovar in mytovary %}
+                                <tr class="tovar">
+                                    <td id="del" style="display:None;">{{tovar.PometkaUdaleniya}}</td>
+                                    <td><div id="id_subobj">{{tovar.initial.id}}</div></td>
+                                    <td class="nomenklatura">{{ tovar.Nomenklatura }}</td>
+                                    <td class="Kolichestvo">{{ tovar.Kolichestvo }}</td>
+                                    <td>{{ tovar.EdinitsaIzmereniya }}</td>
+                                    <td>{{ tovar.Koeffitsient }}</td>
+                                    <td>{{ tovar.TSena }}</td>
+                                    <td><input type="text" class="SummaBezSkidki"></td>
+                                    <td>{{ tovar.ProtsentSkidkiNatsenki }}</td>
+                                    <td class="Summa">{{ tovar.Summa }}</td>
+                                    <td>{{ tovar.StavkaNDS }}</td>
+                                    <td class="SummaNDS">{{ tovar.SummaNDS }}</td>
+                                    <td></td>
+                                    <td class="selection">
+                                        <div class="Sklady">{{ tovar.RazmeschenieSklady }}</div>
+                                        <div class="ZakazPostavschiku">{{ tovar.RazmeschenieZakazPostavschiku }}</div>
+                                        <div class="VnutrenniyZakaz">{{ tovar.RazmeschenieVnutrenniyZakaz }}</div>
+                                    </td>                            
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>    
+                </div>
+
+
+                <!-- Вкладка Возвратная Тара -->
+
+
+                <!-- <div id="vozvratnaya_tara" role="tabpanel" class="tab-pane fade" aria-labelledby="vozvratnaya_tara-tab">
+                    <button class="addVozvratnaya_tara">Добавить</button><button>Сохранить</button>
+                    <table border="1px">
+                        <tr>
+                            <td>№</td>
+                            <td>Код</td>
+                            <td>Артикул</td>
+                            <td>Номенклатура</td>
+                            <td>Количество</td>
+                            <td>Цена</td>
+                            <td>Ед.хранения</td>
+                            <td>Сумма</td>
+                            <td>Размещение</td>
+                        </tr>
+                    </table>
+                </div>
+ -->
+
+                <!-- вкладка Услуги -->
+
+
+                <div id="Uslugi" role="tabpanel" class="tab-pane fade" aria-labelledby="uslugy-tab">
+                    <button class="add btn btn-default btn-xs" id="addUslugu">Добавить</button>
+                    <button class="save btn btn-default btn-xs">Сохранить</button>
+                    <button class="del btn btn-default btn-xs">Удалить</button>
+                    <table id="uslugi"  border="1" class="table table-hover">
+                        <tr>
+                            <td>№</td>
+                            <td>Номенклатура<button class="btn btn-default btn-xs" id="NomenklaturaUslug">+</button></td>
+                            <td>Содержание услуги, доп.сведения</td>
+                            <td>Количество</td>
+                            <td>Цена</td>
+                            <td>%Руч.ск</td>
+                            <td>Сумма</td>
+                            <td>Ставка НДС</td>
+                            <td>Сумма НДС</td>
+                            <td>Всего</td>
+                        </tr>
+                        {% for tovar in myuslugy %}
+                        <tr class="tovar">
+                            <td id="del" style="display:None;">{{tovar.PometkaUdaleniya}}</td>
+                            <td><div id="id_subobj">{{tovar.initial.id}}</div></td>
+                            <td class="nomenklatura">{{ tovar.Nomenklatura }}</td>
+                            <td>{{ tovar.Soderzhanie }}</td>
+                            <td class="Kolichestvo">{{ tovar.Kolichestvo }}</td>
+                            <td>{{ tovar.TSena }}</td>
+                            <td>{{ tovar.ProtsentSkidkiNatsenki }}</td>
+                            <td class="Summa">{{ tovar.Summa }}</td>
+                            <td>{{ tovar.StavkaNDS }}</td>
+                            <td class="SummaNDS">{{ tovar.SummaNDS }}</td>
+                            <td></td>                           
+                        </tr>
+                    {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="form">
+                <hr>
+                <p><label>Всего:<span id="summaObs"></span></label></p>
+                <div style="display:none">{{ ZakazPokupatelyaForm.SummaDokumenta }}</div>
+                <p><label>НДС:<span id="ndsObs"></span></label></p>
+                <label for="">Комментарий:</label>{{ ZakazPokupatelyaForm.Kommentariy }}
+            </div>
+        </div>
+
+
+<button class="saveObj btn btn-default btn-xs">Сохранить объект</button>
+
+
+<!-- далее пойдут спрятанные таблицы -->
+
+
+            <!-- строка Товары -->
+
+
+            <table style="display: none;" class="addTovar table table-hover">
+                <tr class="new">
+                    <td></td>
+                    <td class="nomenklatura">{{ TovaryForm.Nomenklatura }}</td>
+                    <td class="Kolichestvo">{{ TovaryForm.Kolichestvo }}</td>
+                    <td>{{ TovaryForm.EdinitsaIzmereniya }}</td>
+                    <td>{{ TovaryForm.Koeffitsient }}</td>
+                    <td>{{ TovaryForm.TSena }}</td>
+                    <td><input type="text" class="SummaBezSkidki"></td>
+                    <td>{{ TovaryForm.ProtsentSkidkiNatsenki }}</td>
+                    <td class="Summa">{{ TovaryForm.Summa }}</td>
+                    <td>{{ TovaryForm.StavkaNDS }}</td>
+                    <td class="SummaNDS">{{ TovaryForm.SummaNDS }}</td>
+                    <td></td>
+                    <td>
+                        <div class="dropdown" id="T">
+                            <button class="btn btn-default btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                Выбрать
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                              <li><a class="Sklady">Склады</a></li>
+                              <li><a class="ZakazPostavschiku">Заказы поставщиков</a></li>
+                              <li><a class="VnutrenniyZakaz">Внутренние заказы</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+
+            <!-- строка Возвратная тара -->
+
+
+            <!-- <table style="display: none;" id="addVTinVozvTara">
+                <tr class="new">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>{{ VozvratnayaTaraForm.Nomenklatura }}</td>
+                    <td>{{ VozvratnayaTaraForm.Kolichestvo }}</td>
+                    <td>{{ VozvratnayaTaraForm.TSena }}</td>
+                    <td></td>
+                    <td>{{ VozvratnayaTaraForm.Summa }}</td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                Выбрать
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                              <li><a class="Sklady">Склады</a></li>
+                              <li><a class="ZakazPostavschiku">Заказы поставщиков</a></li>
+                              <li><a class="VnutrenniyZakaz">Внутренние заказы</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            </table> -->
+
+
+            <!-- Строка Услуги -->
+
+
+            <table style="display: none;" class="addUslugu table table-hover">
+                <tr class="new">
+                    <td></td>
+                    <td class="nomenklatura">{{ UslugiForm.Nomenklatura }}</td>
+                    <td>{{ UslugiForm.Soderzhanie }}</td>
+                    <td class="Kolichestvo">{{ UslugiForm.Kolichestvo }}</td>
+                    <td>{{ UslugiForm.TSena }}</td>
+                    <td>{{ UslugiForm.ProtsentSkidkiNatsenki }}</td>
+                    <td class="Summa">{{ UslugiForm.Summa }}</td>
+                    <td>{{ UslugiForm.StavkaNDS }}</td>
+                    <td class="SummaNDS">{{ UslugiForm.SummaNDS }}</td>
+                    <td></td>
+                </tr>
+            </table>
+
+<!-- dropdowns -->
+
+
+<!-- dropdown Возвратная тара -->
+
+<!--
+        <div class="VozvratnayaTara" style="display: none;">
+            <div class="Sklady">{{ VozvratnayaTaraForm.RazmeschenieSklady }}</div>
+            <div class="ZakazPostavschiku">{{ VozvratnayaTaraForm.RazmeschenieZakazPostavschiku }}</div>
+            <div class="VnutrenniyZakaz">{{ VozvratnayaTaraForm.RazmeschenieVnutrenniyZakaz }}</div>
+        </div> -->
+
+
+<!-- dropdown Товары -->
+
+
+        <div class="T" style="display: none;">
+            <div class="Sklady">{{ TovaryForm.RazmeschenieSklady }}</div>
+            <div class="ZakazPostavschiku">{{ TovaryForm.RazmeschenieZakazPostavschiku }}</div>
+            <div class="VnutrenniyZakaz">{{ TovaryForm.RazmeschenieVnutrenniyZakaz }}</div>
+        </div>
+
+
+<!-- dropdown Заказ Покупателя -->
+        <div class="ZakazPokupatelya" style="display: none;">
+            <div class="ZakazPostavschiku">{{ ZakazPokupatelyaForm.DokumentOsnovanieZakazPostavschiku}}</div>
+            <div class="Sobytie">{{ ZakazPokupatelyaForm.DokumentOsnovanieSobytie}}</div>
+            <div class="SchetNaOplatuPokupatelyu">{{ ZakazPokupatelyaForm.DokumentOsnovanieSchetNaOplatuPokupatelyu}}</div>
+        </div>
+
+
+    </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<script src="{% static 'js/docscript.js' %}"></script>
+<script src="{% static 'js/ZakazPokupatelya.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,188 @@
+{% load staticfiles %}
+{% load verb %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Меню</title>
+		<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+		<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,400italic,700&subset=latin,cyrillic-ext' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet/less" type="text/css" href="{% static 'css/style.less'%}">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.0.0/less.js"></script>
+
+
+	</head>
+	<body class="c1">
+			<div class="exit"> 	
+			{% if username %}
+				<a id="dLabel1" class="btn" href="/logout/"> ({{request.user}}) Выйти</a>
+			{%else%}
+				<a id="dLabel1" class="btn" href="/login/">Войти</a>
+			{%endif%}
+			</div>
+		<div id="menu">
+			<header>
+				<nav role="navigation" class="navbar navbar-inverse">
+	  				<div id="navbarCollapse" class="collapse navbar-collapse">
+	  					
+					    <div style="display:inline-block;">
+					    	<ul class="nav navbar-nav">
+					    	<li class="dropdown">	
+					    		<a id="dLabel" data-toggle="dropdown" data-target="#" href="#"> Справочники<span class="caret"></span></a>
+	    								<ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+	    									<li class="dropdown-submenu">
+	    									<a tabindex="-1" href="#">Предприятие</a>
+	    										<ul class="dropdown-menu">
+		    										<li><a tabindex="-1" href="http://megauto-taisiya.c9users.io/viborSpr/Organizatsii/" target="_blank">Организации</a></li>
+		    										<li class="divider"></li>
+		    										<li><a tabindex="-1" href="http://megauto-taisiya.c9users.io/viborSpr/Sklady/" target="_blank">Склады</a></li>
+		    										<li class="divider"></li>
+		    										<li><a tabindex="-1" href="http://megauto-taisiya.c9users.io/viborSpr/FizicheskieLitsa/" target="_blank">Физические лица</a></li>
+		    										<li><a tabindex="-1" href="http://megauto-taisiya.c9users.io/viborSpr/Podrazdeleniya/" target="_blank">Подразделения</a></li>
+		    										<li class="divider"></li>
+		    										<li><a tabindex="-1" href="http://megauto-taisiya.c9users.io/viborSpr/StatiZatrat/" target="_blank">Статьи затрат</a></li>
+		    										<li class="divider"></li>
+		    										<li><a tabindex="-1" href="http://megauto-taisiya.c9users.io/viborSpr/DogovoryEkvayringa/" target="_blank">Договоры эквайринга</a></li>
+		    									</ul>	
+	    									</li>
+		    									<li class="dropdown-submenu">
+			    									<a tabindex="-1" href="#">Номенклатура</a>
+			    										<ul class="dropdown-menu">
+				    										<li><a tabindex="-1" href="http://megauto-taisiya.c9users.io/viborSpr/Nomenklatura/" target="_blank">Номенклатура</a></li>
+				    										<li><a tabindex="-1" href="http://megauto-taisiya.c9users.io/viborSpr/VidyNomenklatury/" target="_blank">Виды номенклатуры</a></li>
+				    										<li class="divider"></li>
+				    										<li><a tabindex="-1" href="http://megauto-taisiya.c9users.io/viborSpr/TipyTSenNomenklatury/" target="_blank">Типы цен номенклатуры</a></li>
+				    										<li class="divider"></li>
+				    										<li><a tabindex="-1" href="http://megauto-taisiya.c9users.io/viborSpr/TipyTSenNomenklaturyKontragentov/" target="_blank">Типы цен номенклатуры контрагентов</a></li>
+				    										<li class="divider"></li>
+				    										<li><a tabindex="-1" href="http://megauto-taisiya.c9users.io/viborSpr/NomeraGTD/" target="_blank">Номера ГТД</a></li>
+				    									</ul>	
+		    									</li>
+		    									<li class="dropdown-submenu">
+			    									<a tabindex="-1" href="#">Денежные средства</a>
+			    										<ul class="dropdown-menu">
+					    									<li><a tabindex="-1"href="http://megauto-taisiya.c9users.io/viborSpr/Kassy/" target="_blank">Кассы</a></li>
+					    									<li><a tabindex="-1" href="http://megauto-taisiya.c9users.io/viborSpr/KassyKKM/" target="_blank">Кассы ККМ</a></li>
+					    									<li><a tabindex="-1" href="http://megauto-taisiya.c9users.io/viborSpr/VidyOplatCHekaKKM/" target="_blank">Виды оплат чека ККМ</a></li>
+					    								</ul>	
+		    									</li>
+	    										<li class="dropdown-submenu">
+	    											<a tabindex="-1" href="#">Контрагенты</a>
+	    												<ul class="dropdown-menu">
+				    										<li><a tabindex="-1" href="http://megauto-taisiya.c9users.io/viborSpr/Kontragenty/" target="_blank">Контрагенты</a></li>
+				    										<li><a tabindex="-1" href="http://megauto-taisiya.c9users.io/viborSpr/DogovoryKontragentov/" target="_blank">Договоры контрагентов</a></li>
+				    										<li class="divider"></li>
+				    										<li><a tabindex="-1" href="http://megauto-taisiya.c9users.io/viborSpr/Regiony/" target="_blank">Регионы</a></li>
+				    										<li class="divider"></li>
+				    										<li><a tabindex="-1" href="http://megauto-taisiya.c9users.io/viborSpr/KontaktnyeLitsaKontragentov/" target="_blank">Контактные лица контрагентов</a></li>
+				    										<li><a tabindex="-1" href="http://megauto-taisiya.c9users.io/viborSpr/KontaktnyeLitsa/" target="_blank">Контактные лица</a></li>
+				    										<li class="divider"></li>
+				    										<li><a tabindex="-1" href="http://megauto-taisiya.c9users.io/viborSpr/VidyKontaktnoiInformatsii/" target="_blank">Виды контактной информации</a></li>
+				    										<li><a tabindex="-1" href="http://megauto-taisiya.c9users.io/viborSpr/GruppySobytiy/" target="_blank">Группы событий</a></li>
+				    									</ul>	
+		    									</li>
+	    									<li class="dropdown-submenu">
+	    										<a tabindex="-1" href="#">Классификаторы</a>
+	    											<ul class="dropdown-menu">
+			    										<li><a tabindex="-1" href="http://megauto-taisiya.c9users.io/viborSpr/Valyuty/" target="_blank">Валюты</a></li>
+			    										<li class="divider"></li>
+			    										<li><a tabindex="-1" href="http://megauto-taisiya.c9users.io/viborSpr/Banki/" target="_blank">Банки</a></li>
+			    										<li><a tabindex="-1" href="http://megauto-taisiya.c9users.io/viborSpr/BankovskieScheta/" target="_blank">Банковские счета</a></li>
+			    										<li class="divider"></li>
+			    										<li><a tabindex="-1" href="http://megauto-taisiya.c9users.io/viborSpr/KlassifikatorOKOPF/" target="_blank">Классификатор ОКОПФ</a></li>
+			    										<li class="divider"></li>
+			    										<li><a tabindex="-1" href="http://megauto-taisiya.c9users.io/viborSpr/EdinitsyIzmereniya/" target="_blank">Единицы измерения</a></li>
+			    										<li><a tabindex="-1" href="http://megauto-taisiya.c9users.io/viborSpr/KlassifikatorEdinitsIzmereniya/" target="_blank">Классификатор единиц измерения</a></li>
+			    									</ul>	
+	    									</li>
+	        							</ul>
+	        				</li>
+					    	<li class="dropdown">	
+					    		<a id="dLabel" data-toggle="dropdown" data-target="#" href="#"> Документы <span class="caret"></span></a>
+	    									<ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+	    										<li class="dropdown-submenu">
+			    									<a tabindex="-1" href="#">Продажи</a>
+					    								<ul role="menu" class="dropdown-menu">
+					    									<li><a tabindex="-1" href="http://megauto-taisiya.c9users.io/viborDoc/ZakazPokupatelya" target="_blank">Заказ покупателя</a></li>
+					    									<li><a tabindex="-1" href="http://megauto-taisiya.c9users.io/viborDoc/SchetNaOplatuPokupatelyu" target="_blank">Счет на оплату покупателю</a></li>
+					    									<li class="divider"></li>
+					    									<li><a tabindex="-1" href="http://megauto-taisiya.c9users.io/viborDoc/RealizatsiyaTovarovUslug" target="_blank">Реализация товаров и услуг</a></li>
+					    									<li><a tabindex="-1" href="http://megauto-taisiya.c9users.io/viborDoc/VozvratTovarovOtPokupatelya" target="_blank">Возврат товаров от покупателя</a></li>
+					    									<li><a tabindex="-1" href="http://megauto-taisiya.c9users.io/viborDoc/SchetFakturaVydannyy" target="_blank">Счет-фактура выданный</a></li>
+					    								</ul>
+					    						</li>	
+					    						<li class="dropdown-submenu">
+	    											<a tabindex="-1" href="#">Закупки</a>
+		    											<ul role="menu" class="dropdown-menu">
+		    												<li><a tabindex="-1" href="http://megauto-taisiya.c9users.io/viborDoc/ZakazPostavschiku" target="_blank">Заказ поставщику</a></li>
+		    												<li class="divider"></li>
+		    												<li><a tabindex="-1" href="http://megauto-taisiya.c9users.io/viborDoc/PostuplenieTovarovUslug" target="_blank">Поступление товаров и услуг</a></li>
+		    												<li><a tabindex="-1" href="http://megauto-taisiya.c9users.io/viborDoc/VozvratTovarovPostavschiku" target="_blank">Возврат товаров поставщику</a></li>
+		    												<li><a tabindex="-1" href="http://megauto-taisiya.c9users.io/viborDoc/SchetFakturaPoluchennyy" target="_blank">Счет-фактура полученный</a></li>
+		    												<li class="divider"></li>
+		    												<li><a tabindex="-1" href="http://megauto-taisiya.c9users.io/viborDoc/GTDImport">ГТД импорт</a></li>
+						    								<li><a tabindex="-1" href=""> Поступление доп. расходов</a></li>
+						    								<li class="divider"></li>
+						    								<li><a tabindex="-1" href="http://megauto-taisiya.c9users.io/viborDoc/Doverennosti" target="_blank">Доверенности</a></li>
+		    											</ul>
+	    										</li>
+	    										<li class="dropdown-submenu">
+	    											<a tabindex="-1" href="#">Розница</a>
+	    												<ul role="menu" class="dropdown-menu">
+	    													<li><a tabindex="-1" href="http://megauto-taisiya.c9users.io/viborDoc/OtchetORoznichnyhProdazhah" target="_blank">Отчет о розничных продах</a></li>
+	    													<li class="divider"></li>
+	    													<li><a tabindex="-1" href="http://megauto-taisiya.c9users.io/viborDoc/CHekKKM" target="_blank">Чек ККМ</a></li>
+	    												</ul>
+	    										</li>
+	    										<li class="dropdown-submenu">
+	    											<a tabindex="-1" href="#">Запасы(склад)</a>
+	    												<ul role="menu" class="dropdown-menu">
+	    													<li><a tabindex="-1" href="http://megauto-taisiya.c9users.io/viborDoc/InventarizatsiyaTovarovNaSklade"  target="_blank"> Инвентаризация товаров на складе</a></li>
+	    												</ul>
+	    										</li>		
+					    					</ul>
+	    					</li>		
+	   						
+					    
+					    </ul>
+					    </div>
+					    <div>
+					    	
+					    		<a href="http://megauto-taisiya.c9users.io/viborSpr/Nomenklatura/" target="_blank">
+					    			<img class="icon" src="{% static 'css/2.png'%}">
+					    		</a>
+					    		<a href="http://megauto-taisiya.c9users.io/viborSpr/Kontragenty/" target="_blank">
+					    			<img class="icon" src="{% static 'css/3.png'%}">
+					    		</a>
+					    		<a href="http://megauto-taisiya.c9users.io/viborSpr/Valyuty/" target="_blank">
+					    			<img class="icon" src="{% static 'css/4.png'%}">
+					    		</a>
+					    		<a href="http://megauto-taisiya.c9users.io/viborSpr/KassyKKM/" target="_blank">
+					    			<img class="icon" src="{% static 'css/5.png'%}">
+					    		</a>
+					    		<a href="http://megauto-taisiya.c9users.io/viborDoc/ZakazPokupatelya" target="_blank">
+					    			<img class="icon" src="{% static 'css/6.png'%}">
+					    		</a>
+					    		<a href="http://megauto-taisiya.c9users.io/viborDoc/RealizatsiyaTovarovUslug"  target="_blank">
+					    			<img class="icon" src="{% static 'css/7.png'%}">
+					    		</a>
+					    		<a href="http://megauto-taisiya.c9users.io/viborDoc/ZakazPostavschiku" target="_blank">
+					    				<img class="icon" src="{% static 'css/8.png'%}">
+					    		</a>
+					    		<a href="http://megauto-taisiya.c9users.io/viborDoc/PostuplenieTovarovUslug" target="_blank">
+					    			<img class="icon" src="{% static 'css/9.png'%}">
+					    		</a>
+					    		
+					    </div>
+	  				</div>
+				</nav>
+			</header>
+		</div>	
+		
+			<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+			<script src="{% static 'js/bootstrap.min.js' %}"></script>
+	</body>
+</html>

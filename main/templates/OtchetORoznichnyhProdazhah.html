@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+	<title>Отчет о розничных продажах</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,400italic,700&subset=latin,cyrillic-ext' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet/less" type="text/css" href="{% static 'css/style.less'%}">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.0.0/less.js"></script>
+</head>
+<body>
+<div class="main-wrapper">
+<h1>Отчет о розничных продажах</h1>
+<div class="formTovary" style="display:none;"></div>
+<div class="form">
+	<p>Тип цен: {{ OtchetORoznichnyhProdazhah.TipTSen }}<button class="btn btn-default btn-xs" id="TipTSen">+</button></p>
+	<p style="display:none;" id="id_obj">{{ obj.id }}</p>
+	<p style="display:none;" id="name_obj">OtchetORoznichnyhProdazhah</p>
+	<p><label class="token">Номер:{{ OtchetORoznichnyhProdazhah.Nomer }}</label><label>от:{{ OtchetORoznichnyhProdazhah.Data }}</label></p>
+	<p><label>Организация:{{ OtchetORoznichnyhProdazhah.Organizatsiya }}<button class="btn btn-default btn-xs" id="Organizatsiya">+</button></label></p>
+	<p><label>ККМ:{{ OtchetORoznichnyhProdazhah.KassaKKM }}<button class="btn btn-default btn-xs" id="KassaKKM">+</button></label></p>
+	<p>
+		<label>Отразить в:</label>
+		<label>{{ OtchetORoznichnyhProdazhah.OtrazhatVUpravlencheskomUchete }}упр. учете</label>
+		<label>{{ OtchetORoznichnyhProdazhah.OtrazhatVBuhgalterskomUchete }}бух. учете</label>
+		<label>{{ OtchetORoznichnyhProdazhah.OtrazhatVNalogovomUchete }}налог. учете</label>
+	</p>
+	<p><label>Склад:{{ OtchetORoznichnyhProdazhah.Sklad }}<button class="btn btn-default btn-xs" id="Sklad">+</button></label></p>
+	<p><label>Инвентаризация:{{ OtchetORoznichnyhProdazhah.InventarizatsiyaTovarovNaSklade }}</label></p>
+</div>
+
+
+
+<ul id="myTabs" class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#Tovary" id="tovary-tab" role="tab" data-toggle="tab" aria-controls="tovary" aria-expanded="true">Товары</a></li>
+</ul>
+
+<div id="myTabContent" class="tab-content">
+
+{# вкладка Товары #}
+
+<div id="Tovary" role="tabpanel" class="tab-pane fade in active" aria-labelledby="tovary-tab">
+	<button class="add btn btn-default btn-xs" id="addTovary">Добавить</button>
+	<button class="save btn btn-default btn-xs">Сохранить</button>
+	<button class="del btn btn-default btn-xs">Удалить</button>
+	<table border="1" class="table table-hover">
+		<tr>
+			<td id="del" style="display:None;">Del</td>
+			<td>№</td>
+			<td>Номенклатура<button id="Nomenklatura">+</button></td>
+			<td>Серия номенклатуры</td>
+			<td>Количество позиций номенклатуры</td>
+			<td>ед.<button id="ed">+</button></td>
+			<td>К.</td>
+			<td>Цена</td>
+			<td>%руч. ск.</td>
+			<td>Сумма</td>
+			<td>%НДС</td>
+			<td>Сумма НДС</td>
+			<td>Всего</td>
+		</tr>
+		{% for tovar in mytovary %}
+			<tr class="tovar table table-hover">
+				<td id="del" style="display:None;">{{tovar.PometkaUdaleniya}}</td>
+				<td><div id="id_subobj">{{tovar.initial.id}}</div></td>
+				<td class="nomenklatura">{{ tovar.Nomenklatura }}</td>
+				<td>{{ tovar.SeriyaNomenklatury }}</td>
+				<td class="Kolichestvo">{{ tovar.Kolichestvo }}</td>
+				<td>{{ tovar.EdinitsaIzmereniya }}</td>
+				<td>{{ tovar.Koeffitsient }}</td>
+				<td>{{ tovar.TSena }}</td>
+				<td>{{ tovar.ProtsentSkidkiNatsenki }}</td>
+				<td class="Summa">{{ tovar.Summa }}</td>
+				<td>{{ tovar.StavkaNDS }}</td>
+				<td class="SummaNDS">{{ tovar.SummaNDS}}</td>
+				<td></td>
+			</tr>
+		{% endfor %}
+	</table>
+</div>
+</div>
+
+
+{# футер #}
+<div class="form">
+	<hr>
+	<p><label>Всего:<span id="summaObs"></span></label></p>
+	<div style="display:none;">{{  RealizatsiyaTovarovUslug.SummaDokumenta }}</div>
+    <p><label>НДС:<span id="ndsObs"></span></label></p>
+	<p><label>Подразделение:{{ OtchetORoznichnyhProdazhah.Podrazdelenie }}<button class="btn btn-default btn-xs" id="Podrazdelenie">+</button></label></p>
+	<p><label>Ответственный:{{ OtchetORoznichnyhProdazhah.Otvetstvennyy }}</label></p>
+	<p><label>Проект:</label>
+		<div class="selection">
+			<div class="dropdown" id="Proekt">
+				<button class="btn btn-default btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+				Выбрать
+				<span class="caret"></span>
+		    	</button>
+		        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" id="dropdownOsnovanie">
+					<li><a class="ProektProekty">Проекты</a></li>
+					<li><a class="ProektVidyRaspredeleniyaPoProektam">Виды распределения по проектам</a></li>
+		        </ul>
+		    </div>
+		    <div class="Proekt">
+				<div class="ProektProekty">{{ OtchetORoznichnyhProdazhah.ProektProekty }}</div>
+				<div class="ProektVidyRaspredeleniyaPoProektam">{{ OtchetORoznichnyhProdazhah.ProektVidyRaspredeleniyaPoProektam }}</div>
+			</div>
+	    </div>
+	</p>
+	<p><label>Статья Движения денежныйх средств:{{ OtchetORoznichnyhProdazhah.StatyaDvizheniyaDenezhnyhSredstv }}</label></p>
+	<p><label>Комментарий:{{ OtchetORoznichnyhProdazhah.Kommentariy }}</label></p>
+</div>
+
+
+<button class="saveObj btn btn-default btn-xs">Сохранить объект</button>
+
+
+{# скрытые строки и dropdown'ы #}
+
+<div style="display: none;">
+
+{# строка Товары #}
+
+	<table class="addTovary table table-hover">
+		<tr class="new">
+			<td></td>
+			<td class="nomenklatura">{{ TovaryForm.Nomenklatura }}</td>
+			<td>{{ TovaryForm.SeriyaNomenklatury }}</td>
+			<td class="Kolichestvo">{{ TovaryForm.Kolichestvo }}</td>
+			<td>{{ TovaryForm.EdinitsaIzmereniya }}</td>
+			<td>{{ TovaryForm.Koeffitsient }}</td>
+			<td>{{ TovaryForm.TSena }}</td>
+			<td>{{ TovaryForm.ProtsentSkidkiNatsenki }}</td>
+			<td class="Summa">{{ TovaryForm.Summa }}</td>
+			<td>{{ TovaryForm.StavkaNDS }}</td>
+			<td class="SummaNDS">{{ TovaryForm.SummaNDS}}</td>
+			<td></td>
+		</tr>
+	</table>
+
+
+
+{# проект #}
+	
+</div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<script src="{% static 'js/docscript.js' %}"></script>
+<script src="{% static 'js/OtchetORoznichnyhProdazhah.js' %}"></script>
+</body>
+</html>

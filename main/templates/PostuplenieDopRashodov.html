@@ -1,0 +1,170 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Поступление доп. расходов</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<link rel="stylesheet" href="{% static 'css/style.css' %}">
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,400italic,700&subset=latin,cyrillic-ext' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet/less" type="text/css" href="{% static 'css/style.less'%}">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.0.0/less.js"></script>
+	</head>
+<body>
+	<div class="main-wrapper">
+	<h1>Поступление доп. расходов</h1>
+	<div class="formTovary" style="display:none;"></div>
+<div class="form">
+	<p>Тип цен: {{ PostuplenieDopRashodov.TipTSen }}</p>
+	<p style="display:none;" id="id_obj">{{ obj.id }}</p>
+	<p style="display:none;" id="name_obj">PostuplenieDopRashodov</p>
+	<p><label class="token">Номер:{{PostuplenieDopRashodov.Nomer }}</label><label>от:{{PostuplenieDopRashodov.Data }}</label></p>
+	<p><label>Организация:{{PostuplenieDopRashodov.Organizatsiya }}</label></p>
+	<p><label>Контрагент:{{PostuplenieDopRashodov.Kontragent }}</label></p>
+	<p><label>Договор:{{PostuplenieDopRashodov.DogovorKontragenta }}</label></p>
+	<p><label>Отрзаить в:</label><label>{{PostuplenieDopRashodov.OtrazhatVUpravlencheskomUchete }}упр.учете</label><label>{{PostuplenieDopRashodov.OtrazhatVBuhgalterskomUchete }}бух. учете</label><label>{{PostuplenieDopRashodov.OtrazhatVNalogovomUchete }}налог. учете</label></p>
+	<p><label>Способ распределения:{{PostuplenieDopRashodov.SposobRaspredeleniya }}</label></p>
+	
+	<p><label>Содержание:{{PostuplenieDopRashodov.Soderzhanie }}</label></p>
+	<p><label>Сумма расхода(руб):{{PostuplenieDopRashodov.Summa }}</label></p>
+	<p><label>Ставка НДС:{{PostuplenieDopRashodov.StavkaNDS }}</label></p>
+	<p><label>Сумма НДС:{{PostuplenieDopRashodov.SummaNDS }}</label></p>
+</div>
+
+
+{# Вкладки #}
+
+<ul id="myTabs" class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#Tovary" id="tovary-tab" role="tab" data-toggle="tab" aria-controls="tovary" aria-expanded="true">Товары</a></li>
+    <li role="presentation"><a href="#dopolnitelno" role="tab" id="dopolnitelno-tab" data-toggle="tab" aria-controls="dopolnitelno">Дополнительно</a></li>
+</ul>
+<div id="myTabContent" class="tab-content">
+
+{# товары #}
+
+<div id="Tovary" role="tabpanel" class="tab-pane fade in active" aria-labelledby="tovary-tab">
+	<button class="add btn btn-default btn-xs" id="addTovar">Добавить</button>
+	<button class="save btn btn-default btn-xs">Сохранить</button>
+	<button class="del btn btn-default btn-xs">Удалить</button>
+	<table border="1"class="table table-hover" >
+		<tr>
+			<td id="del" style="display:None;">Del</td>
+			<td>№</td>
+			<td>Номенклатура</td>
+			<td>Серия номенклатуры</td>
+			<td>Количество</td>
+			<td>Ед.</td>
+			<td>К.</td>
+			<td>Сумма товара</td>
+			<td>Вес товара</td>
+			<td>Доп. расходы(сумма)</td>
+			<td>Сумма НДС</td>
+			<td>Документ партии</td>
+			<td>заказ покупателя</td>			
+		</tr>
+		{% for tovar in mytovary %}
+				<tr class="tovar">
+					<td id="del" style="display:None;">{{tovar.PometkaUdaleniya}}</td>
+					<td><div id="id_subobj">{{tovar.initial.id}}</div></td>
+					<td>{{ tovar.Nomenklatura }}</td>
+					<td>{{ tovar.SeriyaNomenklatury }}</td>
+					<td>{{ tovar.Kolichestvo }}</td>
+					<td>{{ tovar.EdinitsaIzmereniya }}</td>
+					<td>{{ tovar.Koeffitsient }}</td>
+					<td>{{ tovar.SummaTovara }}</td>
+					<td></td>
+					<td>{{ tovar.Summa }}</td>
+					<td>{{ tovar.SummaNDS }}</td>
+					<td class="selection">
+						<div class="PostuplenieTovarovUslugVNTT">{{ tovar.PostuplenieTovarovUslugVNTT }}</div>
+						<div class="OprihodovanieTovarov">{{ tovar.OprihodovanieTovarov }}</div>
+						<div class="PostuplenieTovarovUslug">{{ tovar.PostuplenieTovarovUslug }}</div>
+						<div class="AvansovyyOtchet">{{ tovar.AvansovyyOtchet }}</div>
+					</td>
+					<td>{{ tovar.ZakazPokupatelya }}</td>	
+				</tr>
+			{% endfor %}
+	</table>
+</div>
+
+
+
+{# дополнительно #}
+
+<div id="dopolnitelno" role="tabpanel" class="tab-pane fade" aria-labelledby="dopolnitelno-tab">
+	<div class="form">
+		<span>Дополнительная аналитика</span>
+		<p><label>Вх. номер:{{PostuplenieDopRashodov.NomerVhodyaschegoDokumenta }}</label></p>
+		<p><label>Вх. дата:{{PostuplenieDopRashodov.DataVhodyaschegoDokumenta }}</label></p>
+		<p><label>Подразделение:{{PostuplenieDopRashodov.Podrazdelenie }}</label></p>
+		<p><label>Ответственный:{{PostuplenieDopRashodov.Otvetstvennyy }}</label></p>
+	</div>
+</div>
+</div>
+
+{# футер #}
+
+<div class="form">
+	<p><label>Комментарий:{{PostuplenieDopRashodov.Kommentariy }}</label></p>
+</div>
+
+<button class="saveObj btn btn-default btn-xs">Сохранить объект</button>
+
+
+{# строка Товары #}
+
+<div style="display: none;">
+	<table class="addTovar table table-hover">
+		<tr class="new">
+			<td></td>
+			<td>{{ TovaryForm.Nomenklatura }}</td>
+			<td>{{ TovaryForm.SeriyaNomenklatury }}</td>
+			<td>{{ TovaryForm.Kolichestvo }}</td>
+			<td>{{ TovaryForm.EdinitsaIzmereniya }}</td>
+			<td>{{ TovaryForm.Koeffitsient }}</td>
+			<td>{{ TovaryForm.SummaTovara }}</td>
+			<td></td>
+			<td>{{ TovaryForm.Summa }}</td>
+			<td>{{ TovaryForm.SummaNDS }}</td>
+			<td>
+				<div class="dropdown btn btn-default btn-xs" id="DokPart">
+					<button class="btn btn-default btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+					Выбрать
+					<span class="caret"></span>
+		        	</button>
+			        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" id="dropdownOsnovanie">
+			            <li><a class="PostuplenieTovarovUslugVNTT">Поступление товаров и услуг в НТТ</a></li>
+						<li><a class="OprihodovanieTovarov">Оприходование товаров</a></li>
+						<li><a class="PostuplenieTovarovUslug">Поступление товаров и услуг</a></li>
+						<li><a class="AvansovyyOtchet">Авансовый отчет</a></li>
+			        </ul>
+			    </div>
+			</td>
+			<td>{{ TovaryForm.ZakazPokupatelya }}</td>			
+		</tr>
+	</table>
+</div>
+
+
+
+{# dropdowns #}
+
+<div style="display: none;">
+
+
+	{# Документ Партии #}
+
+	<div class="DokPart">
+		<div class="PostuplenieTovarovUslugVNTT">{{ TovaryForm.PostuplenieTovarovUslugVNTT }}</div>
+		<div class="OprihodovanieTovarov">{{ TovaryForm.OprihodovanieTovarov }}</div>
+		<div class="PostuplenieTovarovUslug">{{ TovaryForm.PostuplenieTovarovUslug }}</div>
+		<div class="AvansovyyOtchet">{{ TovaryForm.AvansovyyOtchet }}</div>
+	</div>
+</div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="{% static 'js/docscript.js' %}"></script>
+<script src="{% static 'js/PostuplenieDopRashodov.js' %}"></script>
+</body>
+</html>

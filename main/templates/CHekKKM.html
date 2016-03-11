@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+	<title>Чек ККМ</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,400italic,700&subset=latin,cyrillic-ext' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet/less" type="text/css" href="{% static 'css/style.less'%}">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.0.0/less.js"></script>
+</head>
+<body>
+<div class="main-wrapper">
+	<div class="formTovary" style="display:none;"></div>
+	<div class="form">
+		<h1>Чек ККМ</h1>
+		<p>Тип цен: {{ CHekKKM.TipTSen }}</p>
+		<p style="display:none;" id="id_obj">{{ obj.id }}</p>
+		<p style="display:none;" id="name_obj">CHekKKM</p>
+		<p><label class="token">Номер:{{ CHekKKM.Nomer }}</label><label>от:{{ CHekKKM.Data }}</label></p>
+		<p><label>Касса ККМ:{{ CHekKKM.KassaKKM }}</label></p>
+		<p><label>Чек ККМ:{{ CHekKKM.CHekKKMProdazha }}</label></p>
+		<p><label>Склад:{{ CHekKKM.Sklad }}</label></p>
+		<p><label>Дисконтная карта:{{ CHekKKM.DiskontnayaKarta }}</label></p>
+		<!--<p>Оплата:
+		<label class="labelVO"><input id="num1" type="radio" value="1" name="oplata"></label>
+		<label><input id="num2" type="radio" value="2" name="oplata">Списком</label>
+		</p>-->
+	</div>
+	
+	
+	{# вкладки #}
+	
+	<ul id="myTabs" class="nav nav-tabs" role="tablist">
+	    <li role="presentation" class="active"><a href="#tovary" id="tovary-tab" role="tab" data-toggle="tab" aria-controls="tovary" aria-expanded="true">Товары</a></li>
+	    <li role="presentation"><a href="#dopolnitelno" role="tab" id="dopolnitelno-tab" data-toggle="tab" aria-controls="dopolnitelno">Дополнительно</a></li>
+	</ul>
+	<div id="myTabContent" class="tab-content">
+	
+		{# Товары #}
+	
+		<div id="tovary" role="tabpanel" class="tab-pane fade in active" aria-labelledby="tovary-tab">
+			<div id="Tovary">
+				<button class="add btn btn-default btn-xs" id="addTovar">Добавить</button>
+				<button class="save btn btn-default btn-xs">Сохранить</button>
+				<button class="del btn btn-default btn-xs">Удалить</button>
+	
+				<table border="1" class="able table table-hover">
+					<tr>
+						<td id="del" style="display:None;">Del</td>
+						<td>№</td>
+						<td>Номенклатура</td>
+						<td>Серия номенклатуры</td>
+						<td>Количество позиции</td>
+						<td>Ед.</td>
+						<td>К.</td>
+						<td>Цена</td>
+						<td>Сумма без скидок</td>
+						<td>% Руч. ск.</td>
+						<td>Сумма</td>
+					</tr>
+					{% for tovar in mytovary %}
+						<tr class="tovar">
+							<td id="del" style="display:None;">{{tovar.PometkaUdaleniya}}</td>
+							<td><div id="id_subobj">{{tovar.initial.id}}</div></td>
+							<td class="nomenklatura">{{ tovar.Nomenklatura }}</td>
+							<td>{{ tovar.SeriyaNomenklatury }}</td>
+							<td class="kolichestvo">{{ tovar.Kolichestvo }}</td>
+							<td>{{ tovar.EdinitsaIzmereniya }}</td>
+							<td class="koeffitsient">{{ tovar.Koeffitsient }}</td>
+							<td class="tsena">{{ tovar.TSena }}</td>
+							<td class="summaBezSkidky nt"><input type="text"></td>
+							<td class="protsentSkidkiNatsenki">{{ tovar.ProtsentSkidkiNatsenki }}</td>
+							<td class="summa nt">{{ tovar.Summa }}</td>
+						</tr>
+					{% endfor %}
+				</table>
+			</div>
+	
+			<div id="Oplata">
+				<button class="add btn btn-default btn-xs" id="addOplatu">Добавить</button>
+				<button class="save btn btn-default btn-xs">Сохранить</button>
+				<button class="del btn btn-default btn-xs">Удалить</button>
+				
+				<table border="1" class="table table-hover">
+					<tr>
+						<td>№</td>
+						<td>Вид оплаты</td>
+						<td>Сумма</td>
+					</tr>
+					{% for oplata in myoplaty %}
+						<tr class="tovar">
+							<td id="del" style="display:None;">{{oplata.PometkaUdaleniya}}</td>
+							<td><div id="id_subobj">{{oplata.initial.id}}</div></td>
+							<td>{{ oplata.VidOplaty }}</td>
+							<td class="summaOplaty">{{ oplata.Summa }}</td>
+						</tr>
+					{% endfor %}
+				</table>
+			</div>
+		</div>
+	
+	
+	
+		{# Дополнительно #}
+	
+		<div id="dopolnitelno" role="tabpanel" class="tab-pane fade" aria-labelledby="dopolnitelno-tab">
+			<div class="form">
+				<p><label class="nt">Весы:{{ CHekKKM.TekushieVesi }}</label></p>
+				<p><label>Ответственный:{{ CHekKKM.Otvetstvennyy }}</label></p>
+			</div>
+		</div>
+	</div>
+	
+	
+	
+	{# футер #}
+	
+	<div class="form">
+		<hr>
+		<div style="display:none;">{{  CHekKKM.SummaDokumenta }}</div>
+		<p><label>Всего:<span id="vsego"></span></label></p>
+		<p><label>Сумма оплаты:<button class="chet btn btn-default btn-xs">=></button><span id="summaOpl"></span></label></p>
+		<p><label>Сдача:<span id="sdacha"></span></label></p>
+		<p><label>Комментарий:{{ CHekKKM.Kommentariy }}</label></p>
+	</div>
+	
+	
+	<button class="saveObj">Сохранить объект</button>
+	
+	{# строки таблиц #}
+	
+	<div style="display: none">
+		<table class="addTovar table table-hover">
+			<tr class="new">
+				<td></td>
+				<td>{{ TovaryForm.Nomenklatura }}</td>
+				<td>{{ TovaryForm.SeriyaNomenklatury }}</td>
+				<td class="kolichestvo">{{ TovaryForm.Kolichestvo }}</td>
+				<td>{{ TovaryForm.EdinitsaIzmereniya }}</td>
+				<td class="koeffitsient">{{ TovaryForm.Koeffitsient }}</td>
+				<td class="tsena">{{ TovaryForm.TSena }}</td>
+				<td class="summaBezSkidky nt"><input type="text"></td>
+				<td class="protsentSkidkiNatsenki">{{ TovaryForm.ProtsentSkidkiNatsenki }}</td>
+				<td class="summa nt">{{ TovaryForm.Summa }}</td>
+			</tr>
+		</table>
+	
+		<table class="addOplatu table table-hover">
+			<tr class="new">
+				<td></td>
+				<td>{{ Oplata.VidOplaty }}</td>
+				<td class="summaOplaty">{{ Oplata.Summa }}</td>
+			</tr>
+		</table>
+	</div>
+</div>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<script src="{% static 'js/docscript.js' %}"></script>
+<script src="{% static 'js/CHekKKM.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+{% load staticfiles %}
+{% load verb %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Выбор: Документы</title>
+		<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+		<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,400italic,700&subset=latin,cyrillic-ext' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet/less" type="text/css" href="{% static 'css/style.less'%}">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.0.0/less.js"></script>
+	</head>
+	<body>
+		<div class="main-wrapper">
+		<h1>Все {{verb_name}}</h1>
+		<hr>
+		<button class="add btn btn-default btn-xs">
+		<i class="glyphicon glyphicon-plus"></i> Добавить</button>
+		<table border='1' class="table table-hover">
+			<tr>
+				<td></td>
+				<td id="obj" style="display:None;">{{alias}}</td>
+				{% for el in form %}
+					<td>{{ el.label }}</td>
+				{% endfor %}
+			</tr>
+			{% for one in data %}
+				<tr>
+					<td>
+						<button class="change btn btn-default btn-xs">
+							<i class="glyphicon glyphicon-pencil"></i> Изменить</button>
+						<button class="delete btn btn-default btn-xs">
+								<i class="glyphicon glyphicon-trash"></i> Удалить</button>
+					</td>
+					{% for field, value in one.fields.items %}
+						<td><div class="value">{{ value }}</div><div class="field" style="display: None;">{{field}}</div></td>
+					{% endfor %}
+				</tr>
+			{% endfor %}
+		</table>
+		</div>	
+		<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+		<script src="{% static 'js/bootstrap.min.js' %}"></script>
+		<script type="text/javascript">
+			$( document ).ready(function() {
+				$(".add").on( "click", function() {
+					window.open("/"+window.location.href.toString().split('/')[4]+"/new/");
+					location.reload(true);
+				});
+				$(".change").on( "click", function() {
+					window.open("/"+window.location.href.toString().split('/')[4]+"/"+$(this).closest('tr').find('.value').first().text()+"/");
+				});
+				$(".delete").on( "click", function() {
+					if (confirm('Вы уверены, что хотите удалить этот объект?')) {
+						$.ajax({
+							type: "POST",
+							url: '/deleteObj/',
+							data: {"delete":$('#obj').text()+'&'+$(this).closest('tr').find('.field').first().text()+':'+$(this).closest('tr').find('.value').first().text()},
+							success: function(data)
+							{
+								location.reload(true);
+							}
+						});
+					} else {
+
+					}
+				});
+			});
+		</script>
+	</body>
+</html>

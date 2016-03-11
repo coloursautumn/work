@@ -1,0 +1,191 @@
+{% load staticfiles %}
+{% load verb %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Справочник</title>
+		<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+		<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,400italic,700&subset=latin,cyrillic-ext' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet/less" type="text/css" href="{% static 'css/style.less'%}">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.0.0/less.js"></script>
+
+	</head>
+	<body>
+		<div class="main-wrapper">
+		<h1>{{verb_name}}</h1>
+		<div class="form">
+			<p style="display:none;" id="id_obj">{{ obj.id }}</p>
+			<p style="display:none;" id="name_obj">Organizatsii</p>
+			<div>
+				<p class="token" style="display:inline-block;">Номер: {{ formOrganizatsii.Kod }}</p>
+				<p style="display:inline-block;">Наименование: {{ formOrganizatsii.Naimenovanie }}</p>
+			</div>
+			<div>
+				<p style="display:inline-block;">Юр./физ.лицо: {{ formOrganizatsii.YUrFizLitso }}</p>
+				<p style="display:inline-block;">Префикс: {{ formOrganizatsii.Prefiks }}</p>
+				<p style="display:inline-block;">Отражать в регламентном учёте {{ formOrganizatsii.OtrazhatVReglamentirovannomUchete }}</p>
+			</div>	
+			<p>Полное наименование {{ formOrganizatsii.NaimenovaniePolnoe }}</p>
+			<p>Наименование плательщика в платежных поручениях на перечисление в бюджет: {{ formOrganizatsii.NaimenovaniePlatelschikaPriPerechisleniiNalogov }}</p>
+			<p>Осн. банковский счет: {{ formOrganizatsii.OsnovnoyBankovskiySchet }}</p>
+		</div>
+		<hr>
+		<table class="table table-hover" style="display:none;" id="addTovar">
+			<tr class="new tovar">
+				<td>{{formOtvetstvennyeLitsaOrganizatsii.id}}</td>
+				<td>{{formOtvetstvennyeLitsaOrganizatsii.DolzhnostiOrganizatsiy}}</td>
+				<td>{{formOtvetstvennyeLitsaOrganizatsii.FizicheskoeLitso}}</td>
+			</tr>
+		</table>
+		<div class="bs-example bs-example-tabs" data-example-id="togglable-tabs">
+			<ul id="myTabs" class="nav nav-tabs" role="tablist">
+				<li role="presentation" class="active"><a href="#Osnovnye" role="tab" id="Osnovnye-tab" data-toggle="tab" aria-controls="dopolnitelno">Основные</a></li>
+				<li role="presentation"><a href="#OtvetstvennyeLitsaOrganizatsii" id="OtvetstvennyeLitsaOrganizatsii-tab" role="tab" data-toggle="tab" aria-controls="tovary" aria-expanded="true">Ответственные лица</a></li>
+			</ul>
+			<div id="myTabContent" class="tab-content">
+				<div role="tabpanel" class="tab-pane fade" id="OtvetstvennyeLitsaOrganizatsii" aria-labelledby="OtvetstvennyeLitsaOrganizatsii-tab">
+					<button class="add btn btn-default btn-xs">Добавить</button>
+					<button class="save btn btn-default btn-xs">Сохранить</button>
+					<button class="del btn btn-default btn-xs">Удалить</button>
+					<table border='1' class="table table-hover">
+						<tr>
+							<td id="del" style="display:None;">Del</td>
+							<td>№</td>
+							<td>Должность</td>
+							<td>Физ. Лицо<button class="btn btn-default btn-xs" id="FizicheskieLitsa">+</button></td>
+						</tr>
+						{% for mylitso in mylitsa %}
+							<tr class="tovar">
+								<td id="del" style="display:None;">{{mylitso.PometkaUdaleniya}}</td>
+								<td><div id="id_subobj">{{mylitso.initial.id}}</div></td>
+								<td>{{mylitso.DolzhnostiOrganizatsiy}}</td>
+								<td>{{mylitso.FizicheskoeLitso}}</td>
+							</tr>
+						{% endfor %}
+					</table>
+				</div>
+				<div role="tabpanel" class="tab-pane fade in active" id="Osnovnye" aria-labelledby="Osnovnye-tab">
+					<div class="form">
+						<p>Реквизиты</p>
+						<p>ИНН: {{formOrganizatsii.INN}}</p>
+						<p>КПП: {{formOrganizatsii.KPP}}</p>
+						<p>ОГРН: {{formOrganizatsii.OGRN}}</p>
+						<p>ИФНС</p>
+						<p>Код ИФНС: {{formOrganizatsii.KodIMNS}}</p>
+						<p>Свидетельство о постановке на учет в налоговом органе</p>
+						<p>Дата выдачи: {{formOrganizatsii.SvidetelstvoDataVydachi}}</p>
+						<p>Серия и №: {{formOrganizatsii.SvidetelstvoSeriyaNomer}}</p>
+						<p>Коды</p>
+						<p>ОКАТО: {{formOrganizatsii.KodPoOKATO}}</p>
+						<p>ОКПО: {{formOrganizatsii.KodPoOKPO}}</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<button class="saveObj btn btn-default btn-xs">Сохранить объект</button>
+		</div>
+		<script src="{% static 'js/jquery-2.2.0.min.js' %}"></script>
+		<script src="{% static 'js/bootstrap.min.js' %}"></script>
+		<script type="text/javascript">
+			$( document ).ready(function() {
+				$("#FizicheskieLitsa").on( "click", function() {
+					window.open("/FizicheskieLitsa/new/");
+				});
+
+
+				$( "#id_OsnovnoyBankovskiySchet" ).closest( "p" ).append( '<button id="Roditel">+</button>' );
+				$("#Roditel").on( "click", function() {
+					window.open("/BankovskieScheta/new/");
+				});
+
+				
+
+				$('.token input').prop('readonly', true);
+
+				$.each($('body').find('.selection select'), function(){
+					if($(this).val()==''){
+						$(this).toggle();
+					}
+				});
+				$.each($('.selection'), function(){
+					var god = 0;
+					$.each($(this).find('select'), function(){
+						if($(this).val()!=''){
+							god = 1;
+						}
+					});
+					if(god==0){
+						$(this).append($('#addTovar div').parent().html());
+					}
+				});
+
+				$(".tovar select, .tovar input").on( "click", function() {
+					if($(this).closest('tr').attr('class')=='tovar'){
+						$(this).closest('tr').addClass('new');
+					}
+				});
+
+				function ser(el) {
+				    var serialized = $(el).serialize();
+				    if (!serialized) // not a form
+				        serialized = $(el).find('input[name],select[name],textarea[name]').serialize();
+				    return decodeURIComponent(serialized.replace(/\+/gi, " "));
+				}
+				//work wth buttons
+				$(".add").on( "click", function() {
+					$(this).parent().find('tbody').append($("#addTovar").find('tbody').html());
+				});
+				$(".del").on( "click", function() {
+					$(this).parent().find('table #del').toggle();
+				});
+				$(".save").on("click", function() {
+					var arr = [];
+					arr.push($(this).parent().attr('id'));
+					arr.push($('#id_obj').text());
+					arr.push($('#name_obj').text());
+					$.each($(this).parent().find('.new'), function(){
+						arr.push('id_subobj='+$(this).find('div#id_subobj').text()+'&'+ser(this));
+					});
+					$.ajax({
+						type: "POST",
+						url: '/saveSubobj/',
+						contentType: 'application/json; charset=utf-8',
+						data: JSON.stringify(arr),
+						success: function(data)
+						{
+
+						}
+					});
+					$(this).parent().find('.new').removeClass('new');
+				});
+				$(".saveObj").on( "click", function() {
+					var arr = [];
+					arr.push($('#name_obj').text());
+					arr.push($('#id_obj').text());
+					arr.push(ser($('body').find('.form')));
+					$.ajax({
+						type: "POST",
+						url: '/saveObj/',
+						contentType: 'application/json; charset=utf-8',
+						data: JSON.stringify(arr),
+						success: function(data)
+						{
+							location.reload(true);
+						}
+					});
+				});
+			});
+		</script>
+		<script>
+		var a,L,epl=$("#id_Naimenovanie"); 
+		function epl3(){a=epl.val();$("#id_NaimenovaniePolnoe").val(a)};epl3(); 
+		$("#id_Naimenovanie").click(function (){setTimeout('epl3()',100)}); 
+		epl.bind('mouseout mousemove keydown keypress keyup',function(e){epl3()});
+		</script>
+	</body>
+
+</html>

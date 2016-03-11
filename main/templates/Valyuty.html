@@ -1,0 +1,147 @@
+{% load staticfiles %}
+{% load verb %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Справочник</title>
+		<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+		<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,400italic,700&subset=latin,cyrillic-ext' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet/less" type="text/css" href="{% static 'css/style.less'%}">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.0.0/less.js"></script>
+	</head>
+	<body>
+		<div class="main-wrapper">
+		<h1>{{ verb_name }}</h1>
+		<div id="id_obj" style="display:None;">{{obj.id}}</div>
+		<div id="name_obj" style="display:None;">Valyuty</div>
+		<div class="form">
+			{{ formValyuty.as_p }}
+		</div>
+		<hr>
+		<div id="KursyValyut">
+			<button class="add btn btn-default btn-xs">Добавить</button>
+			<button class="save btn btn-default btn-xs">Сохранить</button>
+			<button class="del btn btn-default btn-xs">Удалить</button>
+			<table border='1' class="table table-hover">
+				<tr>
+					<td id="del" style="display:None;">Del</td>
+					<td>№</td>
+					<td>Период</td>
+					<td>Валюта <button id="Valuta">+</button></p></td>
+					<td>Курс</td>
+					<td>Кратность</td>
+				</tr>
+				{% for mykurs in mykursy %}
+					<tr class="tovar">
+						<td id="del" style="display:None;">{{mykurs.PometkaUdaleniya}}</td>
+						<td><div id="id_subobj">{{mykurs.initial.id}}</div></td>
+						<td>{{mykurs.Period}}</td>
+						<td>{{mykurs.Valuta}}</td>
+						<td>{{mykurs.Kurs}}</td>
+						<td>{{mykurs.Kratnost}}</td>
+					</tr>
+				{% endfor %}
+			</table>
+			<button class="saveObj btn btn-default btn-xs">Сохранить объект</button>
+			<button class="reload_window btn btn-default btn-xs" data-id="">Обновить страницу</button>
+		</div>
+		<table style="display:none;" id="addTovar" class="table table-hover">
+			<tr class="new tovar">
+				<td>{{formKursyValyut.id}}</td>
+				<td>{{formKursyValyut.Period}}</td>
+				<td>{{formKursyValyut.Valuta}}</td>
+				<td>{{formKursyValyut.Kurs}}</td>
+				<td>{{formKursyValyut.Kratnost}}</td>
+			</tr>
+		</table>
+	</div>	
+		<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+		<script src="{% static 'js/bootstrap.min.js' %}"></script>
+		<script type="text/javascript">
+		$( document ).ready(function() {
+
+		    $("#Valuta").on( "click", function() {
+    			window.open("/Valyuty/new/");
+			});
+
+			$.each($('body').find('.selection select'), function(){
+				if($(this).val()==''){
+					$(this).toggle();
+				}
+			});
+			$.each($('.selection'), function(){
+				var god = 0;
+				$.each($(this).find('select'), function(){
+					if($(this).val()!=''){
+						god = 1;
+					}
+				});
+				if(god==0){
+					$(this).append($('#addTovar div').parent().html());
+				}
+			});
+
+			$(".tovar select, .tovar input").on( "click", function() {
+				if($(this).closest('tr').attr('class')=='tovar'){
+					$(this).closest('tr').addClass('new');
+				}
+			});
+
+			function ser(el) {
+			    var serialized = $(el).serialize();
+			    if (!serialized) // not a form
+			        serialized = $(el).find('input[name],select[name],textarea[name]').serialize();
+			    return decodeURIComponent(serialized.replace(/\+/gi, " "));
+			}
+			//work wth buttons
+			$(".add").on( "click", function() {
+				$(this).parent().find('tbody').append($("#addTovar").find('tbody').html());
+			});
+
+			$(".del").on( "click", function() {
+				$(this).parent().find('table #del').toggle();
+			});
+			$(".save").on("click", function() {
+				var arr = [];
+				arr.push($(this).parent().attr('id'));
+				arr.push($('#id_obj').text());
+				arr.push($('#name_obj').text());
+				$.each($(this).parent().find('.new'), function(){
+					arr.push('id_subobj='+$(this).find('div#id_subobj').text()+'&'+ser(this));
+				});
+				$.ajax({
+					type: "POST",
+					url: '/saveSubobj/',
+					contentType: 'application/json; charset=utf-8',
+					data: JSON.stringify(arr),
+					success: function(data)
+					{
+
+					}
+				});
+				$(this).parent().find('.new').removeClass('new');
+			});
+			$(".saveObj").on( "click", function() {
+				var arr = [];
+				arr.push($('#name_obj').text());
+				arr.push($('#id_obj').text());
+				arr.push(ser($('body').find('.form')));
+				$.ajax({
+					type: "POST",
+					url: '/saveObj/',
+					contentType: 'application/json; charset=utf-8',
+					data: JSON.stringify(arr),
+					success: function(data)
+					{
+						location.reload(true);
+					}
+				});
+			});
+		});
+		</script>
+		<script src="{% static 'js/localStorage.js' %}"></script>
+	</body>
+</html>

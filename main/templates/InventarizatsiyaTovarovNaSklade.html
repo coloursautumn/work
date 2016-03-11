@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+	<title>Инвентаризация товаров на складе</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,400italic,700&subset=latin,cyrillic-ext' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet/less" type="text/css" href="{% static 'css/style.less'%}">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.0.0/less.js"></script>
+</head>
+<body >
+<div class="main-wrapper">	
+    <form role="form"></form>
+		<h1>Инвентаризация товаров на складе</h1>
+		<p style="display:none;" id="id_obj">{{ obj.id }}</p>
+	    <p style="display:none;" id="name_obj">InventarizatsiyaTovarovNaSklade</p>
+		<p><label>Номер:{{ InventarizatsiyaTovarovNaSklade.Nomer }}</label><label>от:{{ InventarizatsiyaTovarovNaSklade.Data }}</label></p>
+		<p><label>Организация:{{ InventarizatsiyaTovarovNaSklade.Organizatsiya }}</label></p>
+		<p><label>Склад:{{ InventarizatsiyaTovarovNaSklade.Sklad }}</label></p>
+	</form>
+	<div>
+		<p><label><input type="checkbox" id="nomenklatura" />Номенклатура:</label>
+			<select id="filter">
+				<option value="ravno">Равно</option>
+				<option value="neRavno">Не равно</option>
+				<option>В списке</option>
+				<option>Не в списке</option>
+				<option>В группе из списка</option>
+				<option>Не в группе из списка</option>
+				<option>В группе</option>
+				<option>Не в группе</option>
+			</select>
+			{{ TovaryForm.Nomenklatura }}
+		</p>
+		<p><label><input type="checkbox" id="nomenklaturnayaGruppa" />Номенклатурная группа:</label>
+			<select id="filter">
+				<option value="ravno">Равно</option>
+				<option value="neRavno">Не равно</option>
+				<option>В списке</option>
+				<option>Не в списке</option>
+				<option>В группе из списка</option>
+				<option>Не в группе из списка</option>
+				<option>В группе</option>
+				<option>Не в группе</option>
+			</select>
+			{{ TovaryForm.Nomenklatura }}
+		</p>
+		<p><label>{{ InventarizatsiyaTovarovNaSklade.UchityvatSerii }}Учитывать серии</label></p>
+	</div>
+	<hr>
+		<div id="Tovary">
+			<button class="add btn btn-default btn-xs" id="addTovar">Добавить</button>
+		    <button class="save add btn btn-default btn-xs">Сохранить</button>
+		    <button class="del add btn btn-default btn-xs">Удалить</button>
+		    <button class="zapolnit add btn btn-default btn-xs">Заполнить</button>
+				<table border="1" class="table table-hover">
+					<tr>
+						<td id="del" style="display:None;">Del</td>
+						<td>№</td>
+						<td>Номенклатура</td>
+						<td class="seriya">Серия номенклатуры</td>
+						<td>Отклонение</td>
+						<td>Колличество</td>
+						<td>Ед.</td>
+						<td>К.</td>
+						<td>Учет.количество</td>
+						<td>Цена</td>
+						<td>Сумма</td>
+						<td>Учет.сумма</td>
+						<td>Качество</td>
+						<td>Сумма (регл.)</td>
+					</tr>
+					{% for tovar in mytovary %}
+						<tr class="tovar">
+							<td id="del" style="display:None;">{{tovar.PometkaUdaleniya}}</td>
+							<td><div id="id_subobj">{{tovar.initial.id}}</div></td>
+							<td>{{ tovar.Nomenklatura }}</td>
+							<td class="seriya">{{ TovaryForm.SeriyaNomenklatury }}</td>
+							<td></td>
+							<td>{{ tovar.Kolichestvo }}</td>
+							<td>{{ tovar.EdinitsaIzmereniya }}</td>
+							<td>{{ tovar.Koeffitsient }}</td>
+							<td>{{ tovar.KolichestvoUchet }}</td>
+							<td>{{ tovar.TSena }}</td>
+							<td class="Summa">{{ tovar.Summa }}</td>
+							<td class="SummaUchet">{{ tovar.SummaUchet }}</td>
+							<td>{{ tovar.Kachestvo }}</td>
+							<td>{{ tovar.SummaRegl }}</td>
+						</tr>
+					{% endfor %}
+			</table>
+		</div>
+		<div style="display:none">
+			<table class="addTovar table table-hover">
+				<tr class="new">
+					<td></td>
+					<td>{{ TovaryForm.Nomenklatura }}</td>
+					<td class="seriya">{{ TovaryForm.SeriyaNomenklatury }}</td>
+					<td></td>
+					<td>{{ TovaryForm.Kolichestvo }}</td>
+					<td>{{ TovaryForm.EdinitsaIzmereniya }}</td>
+					<td>{{ TovaryForm.Koeffitsient }}</td>
+					<td>{{ TovaryForm.KolichestvoUchet }}</td>
+					<td>{{ TovaryForm.TSena }}</td>
+					<td class="Summa">{{ TovaryForm.Summa }}</td>
+					<td class="SummaUchet">{{ TovaryForm.SummaUchet }}</td>
+					<td>{{ TovaryForm.Kachestvo }}</td>
+					<td>{{ TovaryForm.SummaRegl }}</td>
+				</tr>
+			</table>
+		</div>
+		<div class="form">
+			<hr>
+			<p><label>Сумма руб.:<span class="summaObs"></span></label></p>
+			<p><label>Сумма по учету руб.:<span class="summaPoUchetu"></span></label></p>
+			<p><label>Ответственный:{{ InventarizatsiyaTovarovNaSklade.Otvetstvennyy }}</label></p>
+			<p><label>Комментарий:{{ InventarizatsiyaTovarovNaSklade.Kommentariy }}</label></p>
+		</div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<script src="{% static 'js/docscript.js' %}"></script>
+<script src="{% static 'js/InventarizatsiyaTovarovNaSklade.js' %}"></script>
+</body>
+</html>

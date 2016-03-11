@@ -1,0 +1,244 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Реализация товаров и услуг</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/style.css' %}">
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,400italic,700&subset=latin,cyrillic-ext' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet/less" type="text/css" href="{% static 'css/style.less'%}">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.0.0/less.js"></script>
+</head>
+<body>
+	<div class="main-wrapper">
+	<h1>Реализация товаров и услуг</h1>
+    <div class="formTovary" style="display:none;"></div>
+	<div class="form">
+		<p>Тип цен: {{ RealizatsiyaTovarovUslug.TipTSen }}</p>
+		<p style="display:none;" id="id_obj">{{ obj.id }}</p>
+        <p style="display:none;" id="name_obj">RealizatsiyaTovarovUslug</p>
+		<p><label class="token">Номер:{{  RealizatsiyaTovarovUslug.Nomer }}</label></p>
+		<p><label>от:</label>{{  RealizatsiyaTovarovUslug.Data }}</p>
+		<p><label>Организация:</label>{{  RealizatsiyaTovarovUslug.Organizatsiya }}</p>
+		<p><label>Контрагент:</label>{{  RealizatsiyaTovarovUslug.Kontragent }}</p>
+		<p><label>Договор:</label>{{  RealizatsiyaTovarovUslug.DogovorKontragenta }}</p>
+		<p><label>Сделка:</label><label class="pasteIn_Sdelka"></label>{{ RealizatsiyaTovarovUslug.SdelkaZakazPostavschiku }}</p>
+		<p>
+			<label>Отразить в:</label>
+			{{  RealizatsiyaTovarovUslug.OtrazhatVUpravlencheskomUchete }}<label>Упр.учете</label>
+			{{  RealizatsiyaTovarovUslug.OtrazhatVBuhgalterskomUchete }}<label>бух.учете</label>
+			{{  RealizatsiyaTovarovUslug.OtrazhatVNalogovomUchete }}<label>налог.учете</label>
+		</p>
+		<p><label>Вид передачи: {{  RealizatsiyaTovarovUslug.VidPeredachi }}</label></p>
+		<p><label>Склад: {{ RealizatsiyaTovarovUslug.Sklad }}</label></p>
+		
+	</div>
+
+{# Вкладки #}
+
+
+	<ul id="myTabs" class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#Tovary" id="tovary-tab" role="tab" data-toggle="tab" aria-controls="tovary" aria-expanded="true">Товары</a></li>
+        <li role="presentation"><a href="#Uslugi" role="tab" id="uslugy-tab" data-toggle="tab" aria-controls="uslugy">Услуги</a></li>
+        <li role="presentation"><a href="#dopolnitelno" role="tab" id="dopolnitelno-tab" data-toggle="tab" aria-controls="dopolnitelno">Дополнительно</a></li>
+        <li role="presentation"><a href="#Pechat" role="tab" id="pechat-tab" data-toggle="tab" aria-controls="pechat">Печать</a></li>
+    </ul>
+
+
+	<div id="myTabContent" class="tab-content">
+		{# Вкладка Товары #}
+
+
+		<div id="Tovary" role="tabpanel" class="tab-pane fade in active" aria-labelledby="tovary-tab">
+			<button class="add btn btn-default btn-xs" id="addTovar">Добавить</button>
+            <button class="save btn btn-default btn-xs">Сохранить</button>
+            <button class="del btn btn-default btn-xs">Удалить</button>
+			<table border="1" class="table table-hover" >
+				<tr>
+					<td id="del" style="display:None;">Del</td>
+					<td>№</td>
+					<td>Номенклатура<button class="Nomenklatura btn btn-default btn-xs">+</button></td>
+					<td>Серия номенклатуры</td>
+					<td>Количество</td>
+					<td>Ед.<button class="btn btn-default btn-xs" id="EdinitsaIzmereniya">+</button></td>
+					<td>К.</td>
+					<td>Цена</td>
+					<td>Сумма без скидки</td>
+					<td>%Руч.ск.</td>
+					<td>Сумма</td>
+					<td>% НДС</td>
+					<td>Сумма НДС</td>
+					<td>Всего</td>
+				</tr>
+				{% for tovar in mytovary %}
+					<tr class="tovar">
+						<td id="del" style="display:None;">{{tovar.PometkaUdaleniya}}</td>
+						<td><div id="id_subobj">{{tovar.initial.id}}</div></td>
+						<td class="nomenklatura">{{ tovar.Nomenklatura }}</td>
+						<td>{{ tovar.SeriyaNomenklatury }}</td>
+						<td class="Kolichestvo">{{ tovar.Kolichestvo }}</td>
+						<td>{{ tovar.EdinitsaIzmereniya }}</td>
+						<td>{{ tovar.Koeffitsient }}</td>
+						<td>{{ tovar.TSena }}</td>
+						<td><input type="text" class="SummaBezSkidki"></td>
+						<td>{{ tovar.ProtsentSkidkiNatsenki }}</td>
+						<td class="Summa">{{ tovar.Summa }}</td>
+						<td>{{ tovar.StavkaNDS }}</td>
+						<td class="SummaNDS">{{ tovar.SummaNDS }}</td>
+						<td></td>
+					</tr>
+				{% endfor %}
+			</table>
+		</div>
+
+
+		{# Вкладка Услуги #}
+
+
+		<div id="Uslugi" role="tabpanel" class="tab-pane fade" aria-labelledby="uslugy-tab">
+			<button class="add btn btn-default btn-xs" id="addUslugu">Добавить</button>
+            <button class="save btn btn-default btn-xs">Сохранить</button>
+            <button class="del btn btn-default btn-xs">Удалить</button>
+			<table border="1" class="table table-hover">
+				<tr>
+					<td id="del" style="display:None;">Del</td>
+					<td>№</td>
+					<td>Номенклатура<button class="Nomenklatura btn btn-default btn-xs">+</button></td>
+					<td>Содержание услуги</td>
+					<td>Количество</td>
+                    <td>Цена</td>
+                    <td>Сумма без скидки</td>
+                    <td>%Руч.ск</td>
+                    <td>Сумма</td>
+                    <td>Ставка НДС</td>
+                    <td>Сумма НДС</td>
+                    <td>Всего</td>
+				</tr>
+				{% for tovar in myuslugy %}
+					<tr class="tovar">
+						<td id="del" style="display:None;">{{tovar.PometkaUdaleniya}}</td>
+						<td><div id="id_subobj">{{tovar.initial.id}}</div></td>
+						<td class="nomenklatura">{{ tovar.Nomenklatura }}</td>
+						<td>{{ tovar.Soderzhanie }}</td>
+						<td class="Kolichestvo">{{ tovar.Kolichestvo }}</td>
+						<td>{{ tovar.TSena }}</td>
+						<td><input type="text" class="SummaBezSkidki"></td>
+						<td>{{ tovar.ProtsentSkidkiNatsenki }}</td>
+						<td class="Summa">{{ tovar.Summa }}</td>
+						<td>{{ tovar.StavkaNDS  }}</td>
+						<td class="SummaNDS">{{ tovar.SummaNDS }}</td>
+						<td></td>
+					</tr>
+				{% endfor %}
+			</table>
+		</div>
+
+
+		{# Вкладка Дополнительно #}
+
+
+		<div id="dopolnitelno" role="tabpanel" class="tab-pane fade" aria-labelledby="dopolnitelno-tab">
+			<div class="form">
+				<p><label>Дисконтная крата:</label>{{  RealizatsiyaTovarovUslug.DiskontnayaKarta }}</p>
+				<p><label>Ответственный:</label>{{  RealizatsiyaTovarovUslug.Otvetstvennyy }}</p>
+				<p><label>Б/счет организации:</label>{{  RealizatsiyaTovarovUslug.BankovskiySchetOrganizatsii }}
+				<button class="btn btn-default btn-xs"id="BankovskiySchetOrganizatsii">+</button></p>
+				<p><label>Грузоотправитель:</label>{{  RealizatsiyaTovarovUslug.Gruzootpravitel }}
+				<button class="FizLitsa btn btn-default btn-xs">+</button></p>
+				<p><label>Грузополучатель:</label>{{  RealizatsiyaTovarovUslug.Gruzopoluchatel }}
+				<button class="FizLitsa btn btn-default btn-xs">+</button></p>
+				<p><label>Адрес доставки:</label>{{  RealizatsiyaTovarovUslug.AdresDostavki }}</p>
+				<p><label>Дополнение:</label>{{  RealizatsiyaTovarovUslug.DopolnenieKAdresuDostavki }}</p>
+			</div>
+		</div>
+
+
+		{# Вкладка Печать #}
+
+
+		<div id="Pechat" role="tabpanel" class="tab-pane fade" aria-labelledby="pechat-tab">
+			<div class="form">
+				<p><label>Отпуск разрешил:</label>{{  RealizatsiyaTovarovUslug.OtpuskRazreshil }}
+				<button class="FizLitsa btn btn-default btn-xs">+</button></p>
+				<p><label>Отпуск произвел:</label>{{  RealizatsiyaTovarovUslug.OtpuskProizvel }}
+				<button class="FizLitsa btn btn-default btn-xs">+</button></p>
+				<p><label>Номер:</label>{{  RealizatsiyaTovarovUslug.DoverennostNomer }}<label>от:</label>{{  RealizatsiyaTovarovUslug.DoverennostData }}</p>
+				<p><label>Выдана от:</label>{{  RealizatsiyaTovarovUslug.DoverennostVydana }}</p>
+				<p><label>Через кого:</label>{{  RealizatsiyaTovarovUslug.DoverennostCHerezKogo }}</p>
+			</div>
+		</div>
+	</div>
+
+	
+	{# футер #}
+
+
+	<div class="form">
+		<hr>
+		<p><label>Всего:<span id="summaObs"></span></label></p>
+		<div style="display:none;">{{  RealizatsiyaTovarovUslug.SummaDokumenta }}</div>
+        <p><label>НДС:<span id="ndsObs"></span></label></p>
+		<p><label>Комментарий:</label>{{  RealizatsiyaTovarovUslug.Kommentariy }}</p>
+	</div>
+
+	<button class="saveObj">Сохранить объект</button>
+
+
+
+{# скрытые строки #}
+	<div style="display: none">
+		
+
+		{# строка Товары #}
+
+		<table class="addTovar">
+			<tr class="new">
+				<td></td>
+				<td class="nomenklatura">{{ TovaryForm.Nomenklatura }}</td>
+				<td>{{ TovaryForm.SeriyaNomenklatury }}</td>
+				<td class="Kolichestvo">{{ TovaryForm.Kolichestvo }}</td>
+				<td>{{ TovaryForm.EdinitsaIzmereniya }}</td>
+				<td>{{ TovaryForm.Koeffitsient }}</td>
+				<td>{{ TovaryForm.TSena }}</td>
+				<td><input type="text" class="SummaBezSkidki"></td>
+				<td>{{ TovaryForm.ProtsentSkidkiNatsenki }}</td>
+				<td class="Summa">{{ TovaryForm.Summa }}</td>
+				<td>{{ TovaryForm.StavkaNDS }}</td>
+				<td class="SummaNDS">{{ TovaryForm.SummaNDS }}</td>
+				<td></td>
+			</tr>
+		</table>
+
+
+
+		{# Строка Услуги #}
+
+		<table class="addUslugu">
+			<tr class="new">
+				<td></td>
+				<td class="nomenklatura">{{ UslugiForm.Nomenklatura }}</td>
+				<td>{{ UslugiForm.Soderzhanie }}</td>
+				<td class="Kolichestvo">{{ UslugiForm.Kolichestvo }}</td>
+				<td>{{ UslugiForm.TSena }}</td>
+				<td><input type="text" class="SummaBezSkidki"></td>
+				<td>{{ UslugiForm.ProtsentSkidkiNatsenki }}</td>
+				<td class="Summa">{{ UslugiForm.Summa }}</td>
+				<td>{{ UslugiForm.StavkaNDS  }}</td>
+				<td class="SummaNDS">{{ UslugiForm.SummaNDS }}</td>
+				<td></td>
+			</tr>
+		</table>	
+	</div>
+
+
+	{# dropdowns #}
+</div> 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<script src="{% static 'js/docscript.js' %}"></script>
+<script src="{% static 'js/RealizatsiyaTovarovUslug.js' %}"></script>
+
+</body>
+</html>

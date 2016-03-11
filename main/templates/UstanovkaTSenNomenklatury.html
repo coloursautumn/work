@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Установка цен номенклатуры</title>
+	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/style.css' %}">
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,400italic,700&subset=latin,cyrillic-ext' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet/less" type="text/css" href="{% static 'css/style.less'%}">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.0.0/less.js"></script>
+</head>
+<body>
+	<div class="main-wrapper">
+	<div class="form">
+	<p style="display:none;" id="id_obj">{{ obj.id }}</p>
+	<p style="display:none;" id="name_obj">UstanovkaTSenNomenklatury</p>
+ 	<p><label class="token">Номер:{{ UstanovkaTSenNomenklatury.Nomer }}</label><label>от:{{ UstanovkaTSenNomenklatury.Data }}</label></p>
+ 	</div>
+ 	<p>Тип цен:</p>
+ 	<table>
+ 		{% for tip in TipyTSen %}
+	 		<tr>
+	 			<td><input type="chekbox"></td>
+	 			<td>{{ tip.TipTSenNomenklatury }}</td>
+	 		</tr>
+	 	{% endfor %}
+ 	</table>
+ 	<div class="form">
+ 	<p><label>{{ UstanovkaTSenNomenklatury.NeProvoditNulevyeZnacheniya }}Не регистрировать нулевые цены номенклатуры</label></p>
+ 	</div>
+ 	<table class="table table-hover">
+ 		<tr>
+ 			<td>Номенклатура</td>
+ 			<td>Тип цен</td>
+ 			<td>Способ расчета</td>
+ 			<td>Валюта</td>
+ 			<td>Единица</td>
+ 			<td>% скидки (наценки)</td>
+ 		</tr>
+ 		{% for tovar in mytovary %}
+ 			<tr>
+	 			<td>{{ tovar.Nomenklatura }}</td>
+	 			<td>{{ tovar.TipTSenNomenklatury }}</td>
+	 			<td>{{ tovar.SposobRaschetaTSeny }}</td>
+	 			<td>{{ tovar.Valuta }}</td>
+	 			<td>{{ tovar.EdinitsaIzmereniya }}</td>
+	 			<td>{{ tovar.ProtsentSkidkiNatsenki }}</td>
+	 		</tr>
+ 		{% endfor %}
+ 	</table>
+ </div>	
+</body>
+</html>

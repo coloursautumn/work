@@ -1,0 +1,83 @@
+{% load staticfiles %}
+{% load verb %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Выбор: Справочники</title>
+		<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+		<link rel="stylesheet" href="{% static 'css/style.css' %}">
+		<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,400italic,700&subset=latin,cyrillic-ext' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet/less" type="text/css" href="{% static 'css/style.less'%}">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.0.0/less.js"></script>
+	</head>
+	<body>
+		<div class="main-wrapper table-responsive">
+			<h1>Все {{verb_name}}</h1>
+			<hr>
+			<button class="add btn btn-default btn-xs">
+				<i class="glyphicon glyphicon-plus"></i> Добавить</button>
+			<table class="table table-hover" border='1'>
+				<tr>
+					<td></td>
+					<td id="obj" style="display:None;">{{alias}}</td>
+					{% if tokenId %}
+						<td id="token">id</td>
+					{% endif %}
+					{% for el in form %}
+						<td>{{ el.label }}</td>
+					{% endfor %}
+				</tr>
+				{% for value in values %}
+					<tr>
+						<td>
+							<button class="change btn btn-default btn-xs">
+								<i class="glyphicon glyphicon-pencil"></i> Изменить</button>
+							<button class="delete btn btn-default btn-xs">
+								<i class="glyphicon glyphicon-remove"></i> Удалить</button>
+						</td>
+						{% for val in value %}
+							<td><div class="value">{{ val }}</div></td>
+						{% endfor %}
+					</tr>
+				{% endfor %}
+			</table>
+		</div>	
+			<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+			<script src="{% static 'js/bootstrap.min.js' %}"></script>
+			<script type="text/javascript">
+				$( document ).ready(function() {
+					$(".add").on( "click", function() {
+						window.open("/"+window.location.href.toString().split('/')[4]+"/new/");
+						location.reload(true);
+					});
+					$(".change").on( "click", function() {
+						window.open("/"+window.location.href.toString().split('/')[4]+"/"+$(this).closest('tr').find('.value').first().text()+"/");
+					});
+					$(".delete").on( "click", function() {
+						if($('#token').text()=='id'){
+							var token = 'id:';
+						}else{
+							var token = 'Kod:';
+						}
+						if (confirm('Вы уверены, что хотите удалить этот объект?')) {
+							$.ajax({
+								type: "POST",
+								url: '/deleteObj/',
+								data: {"delete":$('#obj').text()+'&'+token+$(this).closest('tr').find('.value').eq(0).text()},
+								success: function(data)
+								{
+									location.reload(true);
+								}
+							});
+						} else {
+	
+						}
+					});
+				});
+			</script>
+			
+	</body>
+</html>

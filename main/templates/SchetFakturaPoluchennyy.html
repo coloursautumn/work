@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+	<title>Счет-фактура полученный</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,400italic,700&subset=latin,cyrillic-ext' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet/less" type="text/css" href="{% static 'css/style.less'%}">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.0.0/less.js"></script>
+	</head>
+<body> 
+<div class="main-wrapper">
+<h1>Счет-фактура полученный</h1>
+<div class="form">
+	<p style="display:none;" id="id_obj">{{ obj.id }}</p>
+	<p style="display:none;" id="name_obj">SchetFakturaPoluchennyy</p>
+	<p><label class="token">Номер:{{ SchetFakturaPoluchennyy.Nomer }}</label><label>от:{{ SchetFakturaPoluchennyy.Data }}</label></p>
+	<p><label>Организация:{{ SchetFakturaPoluchennyy.Organizatsiya }}</label></p>
+	<p><label>Контрагент:{{ SchetFakturaPoluchennyy.Kontragent }}</label></p>
+	<p><label>Договор:{{ SchetFakturaPoluchennyy.DogovorKontragenta }}</label></p>
+	<p><label>{{ SchetFakturaPoluchennyy.NaAvans }}Счет-фактура на выданный аванс</label></p>
+
+
+	<span>Документ-основание счета-фактуры</span>
+	<br>
+	<label>Основание:</label>
+		<div class="DokumentOsnovaniePostuplenieTovarovUslug">{{ SchetFakturaPoluchennyy.DokumentOsnovaniePostuplenieTovarovUslug }}</div>
+	<div>
+	<span>Реквизиты счета-фактуры поставщика</span>
+		<p><label>Вх.дата:{{ SchetFakturaPoluchennyy.DataVhodyaschegoDokumenta }}</label><label>Вх.номер:{{ SchetFakturaPoluchennyy.NomerVhodyaschegoDokumenta }}</label></p>
+		<p>Всего: <span class="summaDoc"></span> .руб</p>
+	</div>
+
+	<div>
+		<p><label>Ответственный:{{ SchetFakturaPoluchennyy.Otvetstvennyy }}</label></p>
+		<p><label>Комментарий:{{ SchetFakturaPoluchennyy.Kommentariy }}</label></p>
+	</div>
+</div>
+<button class="saveObj btn btn-default btn-xs">Сохранить объект</button>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<script src="{% static 'js/docscript.js' %}"></script>
+<script src="{% static 'js/SchetFakturaPoluchennyy.js' %}"></script>
+
+</body>
+</html>

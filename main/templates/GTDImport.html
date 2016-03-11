@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+	<title>ГТД по импорту</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/style.css' %}">
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,400italic,700&subset=latin,cyrillic-ext' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet/less" type="text/css" href="{% static 'css/style.less'%}">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.0.0/less.js"></script>
+
+</head>
+<body>
+<div class="main-wrapper">	
+	<div class="form">
+		<h1> ГДТ Импорт</h1>
+		<p style="display:none;" id="id_obj">{{ obj.id }}</p>
+		<p style="display:none;" id="name_obj">GTDImport</p>
+		<p><label class="token">Номер:{{ GTDImport.Nomer }}</label><label>от:{{ GTDImport.Data }}</label></p>
+		<p><label>Отразить в:</label>
+			<label>{{ GTDImport.OtrazhatVUpravlencheskomUchete }}Упр. учете</label>
+			<label>{{ GTDImport.OtrazhatVBuhgalterskomUchete }}бух. учете</label>
+			<label>{{ GTDImport.OtrazhatVNalogovomUchete }}налог. учете</label>
+		</p>
+		<p><label>Организация:{{ GTDImport.Organizatsiya }}</label></p>
+		<p><label>Таможня:{{ GTDImport.Kontragent }}</label></p>
+		<p><label>Валютный депозит(&lt;&gt;):{{ GTDImport.DogovorKontragenta }}</label></p>
+		<p><label>Депозит на таможне (руб):{{ GTDImport.DogovorKontragentaRegl }}</label></p>
+	</div>
+	
+	
+	{# вкладки #}
+	<ul id="myTabs" class="nav nav-tabs" role="tablist">
+	    <li role="presentation" class="active"><a href="#Osnovnie" id="osnovnie-tab" role="tab" data-toggle="tab" aria-controls="osnovnie" aria-expanded="true">Оновные</a></li>
+	    <li role="presentation"><a href="#RazdelyGTD" role="tab" id="razdelygtd-tab" data-toggle="tab" aria-controls="razdelygtd">Разделы ГТД</a></li>
+	    <li role="presentation"><a href="#dopolnitelno" role="tab" id="dopolnitelno-tab" data-toggle="tab" aria-controls="dopolnitelno">Дополнительно</a></li>
+	</ul>
+	
+	
+	<div id="myTabContent" class="tab-content">
+	
+	{# основные #}
+	
+	<div id="Osnovnie" role="tabpanel" class="tab-pane fade in active" aria-labelledby="osnovnie-tab">
+		<div class="form">
+			<p><label>Номер ГТД:{{ GTDImport.NomerGTD }}</label></p>
+			<span>Таможенный сбор</span>
+			<div>
+				<p><label>Таможенный сбор (&lt;&gt;):{{ GTDImport.TamozhennyySHtrafVal }}</label></p>
+				<p><label>Таможенный сбор (руб):{{ GTDImport.TamozhennyySbor }}</label></p>
+				<p><label>Таможенный штраф (&lt;&gt;):{{ GTDImport.TamozhennyySHtrafVal }}</label></p>
+				<p><label>Таможенный штраф (руб):{{ GTDImport.TamozhennyySHtraf }}</label></p>
+			</div>
+		</div>
+	</div>
+	
+	
+	
+	{# Разделы ГТД #}
+	<div id="RazdelyGTD" role="tabpanel" class="tab-pane fade" aria-labelledby="razdelygtd-tab">
+	
+		<div id="Razdely">
+			<button class="add btn-default btn-xs" id="addRazdel">Добавить</button>
+			<button class="save btn-default btn-xs ">Сохранить</button>
+			<button class="del btn-default btn-xs">Удалить</button>
+			<table border="1" class="table table-hover">
+				<tr>
+					<td id="del" style="display:None;">Del</td>
+					<td>№</td>
+					<td>Валюта таможенной Стоимости</td>
+					<td>Таможенная стоимость</td>
+					<td>Валюта пошлины</td>
+					<td>Ставка пошлины</td>
+					<td>Сумма пошлины</td>
+					<td>Валюта НДС</td>
+					<td>Ставка НДС</td>
+					<td>Сумма НДС</td>
+				</tr>
+				{% for razdel in myrazdely %}
+					<tr class="tovar">
+						<td id="del" style="display:None;">{{razdel.PometkaUdaleniya}}</td>
+						<td><div id="id_subobj">{{razdel.initial.id}}</div></td>
+						<td class="nt"><label>{{ razdel.TamozhennayaStoimostVValyuteReglUcheta }}руб.</label></td>
+						<td>{{ razdel.TamozhennayaStoimost }}</td>
+						<td><label>{{ razdel.PoshlinaVValyute }}руб.</label></td>
+						<td>{{ razdel.StavkaPoshliny }}</td>
+						<td>{{ razdel.SummaPoshliny }}</td>
+						<td><label>{{ razdel.NDSVValyute }}руб.</label></td>
+						<td>{{ razdel.StavkaNDS }}</td>
+						<td>{{ razdel.SummaNDS }}</td>
+					</tr>
+				{% endfor %}
+			</table>
+		</div>
+		<div id="Tovary">
+			<button class="add btn-default btn-xs" id="addTovar">Добавить</button>
+			<button class="save btn-default btn-xs">Сохранить</button>
+			<button class="del btn-default btn-xs">Удалить</button>
+			<table border="" class="table table-hover">
+				<tr>
+					<td id="del" style="display:None;">Del</td>
+					<td>№</td>
+					<td>Номенклатура</td>
+					<td>Серия Номенклатуры</td>
+					<td>Количество</td>
+					<td>Ед.</td>
+					<td>К.</td>
+					<td>Фактурная стоимость</td>
+					<td>Пошлина(&lt;&gt;)</td>
+					<td>НДС(руб)</td>
+					<td>Документ партии</td>
+					<td>Заказ покупателя</td>
+				</tr>
+				{% for tovar in mytovary %}
+					<tr class="tovar">
+						<td id="del" style="display:None;">{{tovar.PometkaUdaleniya}}</td>
+						<td><div id="id_subobj">{{tovar.initial.id}}</div></td>
+						<td>{{ tovar.Nomenklatura }}</td>
+						<td>{{ tovar.SeriyaNomenklatury }}</td>
+						<td>{{ tovar.Kolichestvo }}</td>
+						<td>{{ tovar.EdinitsaIzmereniya }}</td>
+						<td>{{ tovar.Koeffitsient }}</td>
+						<td>{{ tovar.FakturnayaStoimost }}</td>
+						<td>{{ tovar.SummaPoshliny }}</td>
+						<td>{{ tovar.SummaNDS }}</td>
+						<td class="selection">
+							<div class="DokPart">
+								<div class="PostuplenieTovarovUslugVNTT">{{ tovar.PostuplenieTovarovUslugVNTT }}</div>
+								<div class="PostuplenieTovarovUslug">{{ tovar.PostuplenieTovarovUslug }}</div>	
+								<div class="AvansovyyOtchet">{{ tovar.AvansovyyOtchet }}</div>
+							</div>
+						</td>
+						<td>{{ tovar.ZakazPokupatelya }}</td>
+	
+					</tr>
+				{% endfor %}
+			</table>
+		</div>
+	</div>
+	
+	
+	
+	{# дополнительно #}
+	<div id="dopolnitelno" role="tabpanel" class="tab-pane fade" aria-labelledby="dopolnitelno-tab">
+		<div class="form">
+			<p><label>Подразделение:{{ GTDImport.Podrazdelenie }}</label></p>
+			<p><label>Ответственный:{{ GTDImport.Otvetstvennyy }}</label></p>
+			<p><label>Проект:</label>
+				<div class="selection">
+					<div class="Proekt">
+						<div class="ProektProekty">{{ GTDImport.ProektProekty }}</div>
+						<div class="ProektVidyRaspredeleniyaPoProektam">{{ GTDImport.ProektVidyRaspredeleniyaPoProektam }}</div>
+					</div>
+					<div class="dropdown" id="Proekt">
+						<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+						Выбрать
+						<span class="caret"></span>
+				    	</button>
+				        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" id="dropdownOsnovanie">
+							<li><a class="ProektProekty">Проекты</a></li>
+							<li><a class="ProektVidyRaspredeleniyaPoProektam">Виды распределения по проектам</a></li>
+				        </ul>
+				    </div>
+			    </div>
+			</p>
+		</div>
+	</div>
+	
+	
+	
+	{# футер #}
+	
+	<div class="form">
+		<p><label>Комментарий:{{ GTDImport.Kommentariy }}</label></p>
+	</div>
+	
+	
+	<button class="saveObj btn-default btn-xs">Сохранить объект</button>
+	
+	
+	
+	{# Строки таблиц #}
+	
+	<div style="display: none">
+	
+	{# строка РазделыГТД #}
+	
+		<table class="addRazdel">
+			<tr class="new">
+				<td></td>
+				<td class="nt"><label>{{ Razdely.TamozhennayaStoimostVValyuteReglUcheta }}руб.</label></td>
+				<td>{{ Razdely.TamozhennayaStoimost }}</td>
+				<td><label>{{ Razdely.PoshlinaVValyute }}руб.</label></td>
+				<td>{{ Razdely.StavkaPoshliny }}</td>
+				<td>{{ Razdely.SummaPoshliny }}</td>
+				<td><label>{{ Razdely.NDSVValyute }}руб.</label></td>
+				<td>{{ Razdely.StavkaNDS }}</td>
+				<td>{{ Razdely.SummaNDS }}</td>
+			</tr>
+		</table>
+	
+	
+	
+		{# Товары #}
+	
+		<table class="addTovar table table-hover">
+			<tr class="new">
+				<td></td>
+				<td>{{ TovaryForm.Nomenklatura }}</td>
+				<td>{{ TovaryForm.SeriyaNomenklatury }}</td>
+				<td>{{ TovaryForm.Kolichestvo }}</td>
+				<td>{{ TovaryForm.EdinitsaIzmereniya }}</td>
+				<td>{{ TovaryForm.Koeffitsient }}</td>
+				<td>{{ TovaryForm.FakturnayaStoimost }}</td>
+				<td>{{ TovaryForm.SummaPoshliny }}</td>
+				<td>{{ TovaryForm.SummaNDS }}</td>
+				<td>
+					<div class="dropdown" id="DokPart">
+					<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+					Выбрать
+					<span class="caret"></span>
+			    	</button>
+			        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" id="dropdownOsnovanie">
+						<li><a class="PostuplenieTovarovUslugVNTT">Поступление товаров и услуг в НТТ</a></li>
+						<li><a class="PostuplenieTovarovUslug">Поступление товаров и услуг</a></li>
+						<li><a class="AvansovyyOtchet">Авансовый отчет</a></li>
+			        </ul>
+			    </div>
+				</td>
+				<td>{{ TovaryForm.ZakazPokupatelya }}</td>
+			</tr>
+		</table>
+	</div>
+	
+	
+	
+	{# dropdowns  #}
+	
+	<div style="display: none;">
+	
+	{# Документ Партии #}
+	
+		<div class="DokPart">
+			<div class="PostuplenieTovarovUslugVNTT">{{ TovaryForm.PostuplenieTovarovUslugVNTT }}</div>
+			<div class="PostuplenieTovarovUslug">{{ TovaryForm.PostuplenieTovarovUslug }}</div>	
+			<div class="AvansovyyOtchet">{{ TovaryForm.AvansovyyOtchet }}</div>
+		</div>
+	
+	
+	
+	
+	
+		
+		
+	</div>
+
+</div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<script src="{% static 'js/docscript.js' %}"></script>
+</body>
+</html>

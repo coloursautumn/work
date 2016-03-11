@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Счет на оплату покупателя</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,400italic,700&subset=latin,cyrillic-ext' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet/less" type="text/css" href="{% static 'css/style.less'%}">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.0.0/less.js"></script>
+	</head>
+<body>
+	<div class="main-wrapper">
+	<div class="formTovary" style="display:none;"></div>
+    <div class="form">
+    	<h1>Счет на оплату покупателя</h1>
+		<p>Тип цен: {{ SchetNaOplatuPokupatelyu.TipTSen }}<button class="btn btn-default btn-xs" id="TipTSenb">+</button></p>
+    	<p style="display:none;" id="id_obj">{{ obj.id }}</p>
+        <p style="display:none;" id="name_obj">SchetNaOplatuPokupatelyu</p>
+		<p><label class="token">Номер:{{ SchetNaOplatuPokupatelyu.Nomer }}</label></p>
+		<p><label>от:</label>{{ SchetNaOplatuPokupatelyu.Data }}</p>
+		<p><label>Организация:</label>{{ SchetNaOplatuPokupatelyu.Organizatsiya }}<button class="btn btn-default btn-xs" id="Organizatsiyab">+</button></p>
+		<p><label>Контрагент:</label>{{ SchetNaOplatuPokupatelyu.KontragentKontragenty }}<button class="btn btn-default btn-xs" id="Kontragen">+</button></p>
+		<p><label>Отгрузка:</label>{{ SchetNaOplatuPokupatelyu.DataOtgruzki }}</p>
+		<p><label>Оплата:</label>{{ SchetNaOplatuPokupatelyu.DataOplaty }}</p>
+		<p><label>Склад:</label>{{ SchetNaOplatuPokupatelyu.Sklad }}<button class="btn btn-default btn-xs" id="sklady_button">+</button></p>
+		<p><label>Договор:</label>{{ SchetNaOplatuPokupatelyu.DogovorKontragenta }}<button class="btn btn-default btn-xs" id="DogovorKontragent">+</button></p>
+		<p><label>Б/счет.касса:</label><label class="pasteIn"></label></p>
+		<div class="selection">
+			<div class="schetKassa">
+				<div class="BankovskieScheta">{{ SchetNaOplatuPokupatelyu.StrukturnayaEdinitsaBankovskieScheta }}</div>
+				<div class="Kassy">{{ SchetNaOplatuPokupatelyu.StrukturnayaEdinitsaKassy }}</div>
+			</div>
+			<div class="dropdown">
+		        <button class="btn btn-default btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+		          Выбрать
+		          <span class="caret"></span>
+		        </button>
+		        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" id="dropdownOsnovanie">
+		          
+		          <li><a class="BankovskieScheta">Банковские счета</a></li>
+		          <li><a class="Kassy">Кассы</a></li>
+		        </ul>
+		    </div>
+		</div>
+    </div>
+
+
+    <!-- вкладки -->
+
+
+    <ul id="myTabs" class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#Tovary" id="tovary-tab" role="tab" data-toggle="tab" aria-controls="tovary" aria-expanded="true">Товары</a></li>
+        <li role="presentation"><a href="#dopolnitelno" role="tab" id="dopolnitelno-tab" data-toggle="tab" aria-controls="dopolnitelno">Дополнительно</a></li>
+        <li role="presentation"><a href="#Uslugi" role="tab" id="uslugy-tab" data-toggle="tab" aria-controls="uslugy">Услуги</a></li>
+    </ul>
+
+
+    <!-- Вкладка товары -->
+
+	<div id="myTabContent" class="tab-content">
+
+
+		<div id="Tovary" role="tabpanel" class="tab-pane fade in active" aria-labelledby="tovary-tab">
+		<button class="add btn btn-default btn-xs" id="addTovar">Добавить</button>
+        <button class="save btn btn-default btn-xs">Сохранить</button>
+        <button class="del btn btn-default btn-xs">Удалить</button>
+			<table border="1" class="table table-hover">
+				<tr>
+					<td id="del" style="display:None;">Del</td>
+					<td>№</td>
+					<td>Номенклатура<button id="Nomenklatura">+</button></td>
+					<td>Количество</td>
+					<td>Ед.<button class="btn btn-default btn-xs" id="EdinitsaIzmereniya">+</button></td>
+					<td>К.</td>
+					<td>Цена</td>
+					<td>Сумма без скидок</td>
+					<td>%Руч.ск.</td>
+					<td>Сумма</td>
+					<td>%НДС</td>
+					<td>Сумма НДС</td>
+					<td>Всего</td>
+				</tr>
+				{% for tovar in mytovary %}
+					<tr class="tovar">
+						<td id="del" style="display:None;">{{tovar.PometkaUdaleniya}}</td>
+						<td><div id="id_subobj">{{tovar.initial.id}}</div></td>
+						<td class="nomenklatura">{{ tovar.Nomenklatura }}</td>
+			    		<td class="Kolichestvo">{{ tovar.Kolichestvo }}</td>
+			    		<td>{{ tovar.EdinitsaIzmereniya }}</td>
+			    		<td>{{ tovar.Koeffitsient }}</td>
+			    		<td>{{ tovar.TSena }}</td>
+			    		<td><input type="text" class="SummaBezSkidki"></td>
+			    		<td>{{ tovar.ProtsentSkidkiNatsenki }}</td>
+			    		<td class="Summa">{{ tovar.Summa }}</td>
+			    		<td>{{ tovar.StavkaNDS }}</td>
+			    		<td class="SummaNDS">{{ tovar.SummaNDS }}</td>
+			    		<td></td>
+					</tr>
+				{% endfor %}
+			</table>
+		</div>
+
+
+		<!-- Вкладка Услуги -->
+
+
+		<div id="Uslugi" role="tabpanel" class="tab-pane fade" aria-labelledby="uslugy-tab">
+			<button class="add btn btn-default btn-xs" id="addUslugu">Добавить</button>
+            <button class="save btn btn-default btn-xs">Сохранить</button>
+            <button class="del btn btn-default btn-xs">Удалить</button>
+			<table border="1" class="table table-hover">
+				<tr>
+					<td id="del" style="display:None;">Del</td>
+					<td>№</td>
+					<td>Номенклатура<button id="Nomenklatura">+</button></td>
+					<td>Содержание услуги. доп. сведения</td>
+					<td>Количество</td>
+					<td>Цена</td>
+					<td>%Руч.ск.</td>
+					<td>Сумма</td>
+					<td>Ставка НДС</td>
+					<td>Сумма НДС</td>
+					<td>Всего</td>
+				</tr>
+				{% for tovar in myuslugy %}
+					<tr class="tovar">
+						<td id="del" style="display:None;">{{tovar.PometkaUdaleniya}}</td>
+						<td><div id="id_subobj">{{tovar.initial.id}}</div></td>
+						<td class="nomenklatura">{{ tovar.Nomenklatura }}</td>
+						<td>{{ tovar.Soderzhanie }}</td>
+						<td class="Kolichestvo">{{ tovar.Kolichestvo }}</td>
+						<td>{{ tovar.TSena }}</td>
+						<td>{{ tovar.ProtsentSkidkiNatsenki }}</td>
+						<td class="Summa">{{ tovar.Summa }}</td>
+						<td>{{ tovar.StavkaNDS }}</td>
+						<td class="SummaNDS">{{ tovar.SummaNDS }}</td>
+						<td></td>
+					</tr>
+				{% endfor %}
+			</table>
+		</div>
+
+
+		<!-- вкладка Дополнительно -->
+
+
+		<div id="dopolnitelno" role="tabpanel" class="tab-pane fade" aria-labelledby="dopolnitelno-tab">
+			<div class="form">
+				<p><label>Сумма:<span class="summaObs"></span></label></p>
+				<p><label>Дисконтная карта:</label>{{ SchetNaOplatuPokupatelyu.DiskontnayaKarta }}</p>
+				<p><label>Подразделение:</label>{{ SchetNaOplatuPokupatelyu.Podrazdelenie }}</p>
+				<p><label>Ответственный:</label>{{ SchetNaOplatuPokupatelyu.Otvetstvennyy }}</p>
+				<p><label>Конт.лицо:</label>{{ SchetNaOplatuPokupatelyu.KontaktnoeLitsoKontragentaKontaktnyeLitsaKontragentov }}</p>
+				<p><label>Грузоотправитель:</label>{{ SchetNaOplatuPokupatelyu.Gruzootpravitel }}</p>
+				<p><label>Грузополучатель:</label>{{ SchetNaOplatuPokupatelyu.Gruzopoluchatel }}</p>
+				<p><label>Адрес доставки:</label>{{ SchetNaOplatuPokupatelyu.AdresDostavki }}</p>
+				<p><label>Дополнение:</label>{{ SchetNaOplatuPokupatelyu.DopolnenieKAdresuDostavki }}</p>
+				<p><label>Заказ покупателя:</label>{{ SchetNaOplatuPokupatelyu.ZakazPokupatelya }}</p>
+			</div>
+		</div>
+
+
+	</div>
+
+
+    <!-- футер -->
+
+
+    <div class="form">
+		<div style="display:none;">{{  SchetNaOplatuPokupatelyu.SummaDokumenta }}</div>
+    	<p><label>Всего:<span class="summaObs" id="summaObs"></span></label></p>
+        <p><label>НДС:<span id="ndsObs"></span></label></p>
+    	<p><label>Комментарий:</label>{{ SchetNaOplatuPokupatelyu.Kommentariy }}</p>
+    </div>
+
+    <button class="saveObj btn btn-default btn-xs">Сохранить объект</button>
+
+
+    
+<div style="display: none;"><!-- Скрытые строки таблиц -->
+	
+	<!-- строка Товары -->
+
+    <table class="addTovar">
+    	<tr class="new">
+    		<td></td>
+    		<td class="nomenklatura">{{ TovaryForm.Nomenklatura }}</td>
+    		<td class="Kolichestvo">{{ TovaryForm.Kolichestvo }}</td>
+    		<td>{{ TovaryForm.EdinitsaIzmereniya }}</td>
+    		<td>{{ TovaryForm.Koeffitsient }}</td>
+    		<td>{{ TovaryForm.TSena }}</td>
+    		<td><input type="text" class="SummaBezSkidki"></td>
+    		<td>{{ TovaryForm.ProtsentSkidkiNatsenki }}</td>
+    		<td class="Summa">{{ TovaryForm.Summa }}</td>
+    		<td>{{ TovaryForm.StavkaNDS }}</td>
+    		<td class="SummaNDS">{{ TovaryForm.SummaNDS }}</td>
+    		<td></td>
+    	</tr>
+    </table>
+
+
+    <!-- Строка услуги -->
+
+
+	<table class="addUslugu table table-hover">
+		<tr class="new">
+			<td></td>
+			<td class="nomenklatura">{{ UslugiForm.Nomenklatura }}</td>
+			<td>{{ UslugiForm.Soderzhanie }}</td>
+			<td class="Kolichestvo">{{ UslugiForm.Kolichestvo }}</td>
+			<td>{{ UslugiForm.TSena }}</td>
+			<td>{{ UslugiForm.ProtsentSkidkiNatsenki }}</td>
+			<td class="Summa">{{ UslugiForm.Summa }}</td>
+			<td>{{ UslugiForm.StavkaNDS }}</td>
+			<td class="SummaNDS">{{ UslugiForm.SummaNDS }}</td>
+			<td></td>
+		</tr>
+	</table>
+
+
+</div>
+
+
+<!-- Dropdowns -->
+
+
+<!-- Б.счет. касса -->
+
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="{% static 'js/docscript.js' %}"></script>
+<script src="{% static 'js/SchetNaOplatuPokupatelyu.js' %}"></script>
+</body>
+</html>

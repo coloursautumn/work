@@ -1,0 +1,277 @@
+{% load staticfiles %}
+{% load verb %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Возврат товаров от покупателя</title>
+		<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+		<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,400italic,700&subset=latin,cyrillic-ext' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet/less" type="text/css" href="{% static 'css/style.less'%}">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.0.0/less.js"></script>
+	</head>
+	<body>
+		<div class="main-wrapper">
+		<h1>Возврат товаров от покупателя</h1>
+        <div class="formTovary" style="display:none;"></div>
+		<div class="form">
+			<p>Тип цен: {{ formVozvratTovarovOtPokupatelya.TipTSen }}<button class="btn btn-default btn-xs" id="TipTSenb">+</button></p>
+			<p style="display:none;" id="id_obj">{{ obj.id }}</p>
+			<p style="display:none;" id="name_obj">VozvratTovarovOtPokupatelya</p>
+			<p class="token">Номер: {{ formVozvratTovarovOtPokupatelya.Nomer }}</p>
+			<p>от {{ formVozvratTovarovOtPokupatelya.Data }}</p>
+			<p>Отразить в: {{ formVozvratTovarovOtPokupatelya.OtrazhatVUpravlencheskomUchete }}упр.учете
+			{{ formVozvratTovarovOtPokupatelya.OtrazhatVBuhgalterskomUchete }}бух.учете
+			{{ formVozvratTovarovOtPokupatelya.OtrazhatVNalogovomUchete }}налог.учете</p>
+			<p>Организация: {{ formVozvratTovarovOtPokupatelya.Organizatsiya }}<button class="btn btn-default btn-xs" id="Organizatsiyab">+</button></p>
+			<p>Вид поступления: {{ formVozvratTovarovOtPokupatelya.VidPostupleniya }} {{ formVozvratTovarovOtPokupatelya.SkladOrderSklady }}<button class ="btn btn-default btn-xs"id="SkladOrderSklad">+</button></p>
+			<p>Контрагент: {{ formVozvratTovarovOtPokupatelya.Kontragent }}<button class="btn btn-default btn-xs" id="Kontragen">+</button></p>
+			<p>Договор: {{ formVozvratTovarovOtPokupatelya.DogovorKontragenta }}<button class="btn btn-default btn-xs" id="DogovorKontragent">+</button></p>
+			<p>Сделка: {{ formVozvratTovarovOtPokupatelya.SdelkaZakazPokupatelya }}<button class="btn btn-default btn-xs" id="SdelkaZakazPokupatel">+</button></p>
+		</div>
+		<hr>
+		<div style="display:none;" id="vozvratTovarovOtPokupatelya">{{formTovaryForm.DokumentPartiiVozvratTovarovOtPokupatelya}}</div>
+		<div style="display:none;" id="prihodnyyOrderNaTovary">{{formTovaryForm.DokumentPartiiPrihodnyyOrderNaTovary}}</div>
+		<div style="display:none;" id="postuplenieTovarovUslugVNTT">{{formTovaryForm.DokumentPartiiPostuplenieTovarovUslugVNTT}}</div>
+		<div style="display:none;" id="oprihodovanieTovarov">{{formTovaryForm.DokumentPartiiOprihodovanieTovarov}}</div>
+		<div style="display:none;" id="postuplenieTovarovUslug">{{formTovaryForm.DokumentPartiiPostuplenieTovarovUslug}}</div>
+		<div style="display:none;" id="otchetORoznichnyhProdazhah">{{formTovaryForm.DokumentPartiiOtchetORoznichnyhProdazhah}}</div>
+		<div style="display:none;" id="realizatsiyaTovarovUslug">{{formTovaryForm.DokumentPartiiRealizatsiyaTovarovUslug}}</div>
+		<div style="display:none;" id="avansovyyOtchet">{{formTovaryForm.DokumentPartiiAvansovyyOtchet}}</div>
+		<table style="display:none;" id="addTovar">
+			<tr class="new tovar table table-hover">
+				<td>{{formTovaryForm.id}}</td>
+				<td class="nomenklatura">{{formTovaryForm.Nomenklatura}}</td>
+				<td>{{formTovaryForm.SeriyaNomenklatury}}</td>
+				<td class="Kolichestvo">{{formTovaryForm.Kolichestvo}}</td>
+				<td>{{formTovaryForm.EdinitsaIzmereniya}}</td>
+				<td>{{formTovaryForm.Koeffitsient}}</td>
+				<td>{{formTovaryForm.TSena}}</td>
+				<td>{{formTovaryForm.ProtsentSkidkiNatsenki}}</td>
+				<td class="Summa">{{formTovaryForm.Summa}}</td>
+				<td>{{formTovaryForm.StavkaNDS}}</td>
+				<td class="SummaNDS">{{formTovaryForm.SummaNDS}}</td>
+				<td></td>
+				<td>
+				<div class="dropdown">
+				  <button class="btn btn-default btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+				    Выбрать
+				    <span class="caret"></span>
+				  </button>
+				  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+				    <li><a class="vozvratTovarovOtPokupatelya">Возврат товаров от покупателя</a></li>
+				    <li><a class="prihodnyyOrderNaTovary">Приходный ордер на товары</a></li>
+				    <li><a class="postuplenieTovarovUslugVNTT">Поступление товаров и услуг в НДС</a></li>
+				    <li><a class="oprihodovanieTovarov">Оприходование товаров</a></li>
+				    <li><a class="postuplenieTovarovUslug">Поступление товаров и услуг</a></li>
+				    <li><a class="otchetORoznichnyhProdazhah">Отчет о розничных продажах</a></li>
+				    <li><a class="realizatsiyaTovarovUslug">Реализация товаров и услуг</a></li>
+				    <li><a class="avansovyyOtchet">Авансовый отчет</a></li>
+				  </ul>
+				</div>
+				</td>
+				<td>{{formTovaryForm.Sebestoimost}}</td>
+				<td></td>
+				<td></td>
+				<td>{{formTovaryForm.Kachestvo}}</td>
+				<td>{{formTovaryForm.ProtsentAvtomaticheskihSkidok}}</td>
+				<td>{{formTovaryForm.UslovieAvtomaticheskoySkidki}}</td>
+				<td>{{formTovaryForm.ZnachenieUsloviyaAvtomaticheskoySkidkiint}}</td>
+			</tr>
+		</table>
+		<div class="bs-example bs-example-tabs" data-example-id="togglable-tabs">
+			<ul id="myTabs" class="nav nav-tabs" role="tablist">
+				<li role="presentation" class="active"><a href="#Tovary" id="Tovary-tab" role="tab" data-toggle="tab" aria-controls="tovary" aria-expanded="true">Товары</a></li>
+				<li role="presentation"><a href="#dopolnitelno" role="tab" id="dopolnitelno-tab" data-toggle="tab" aria-controls="dopolnitelno">Дополнительно</a></li>
+				<li role="presentation"><a href="#nds" role="tab" id="nds-tab" data-toggle="tab" aria-controls="nds">НДС</a></li>
+			</ul>
+			<div id="myTabContent" class="tab-content">
+				<div role="tabpanel" class="tab-pane fade in active" id="Tovary" aria-labelledby="Tovary-tab">
+					<button class="add btn btn-default btn-xs">Добавить</button>
+					<button class="save btn btn-default btn-xs">Сохранить</button>
+					<button class="del btn btn-default btn-xs">Удалить</button>
+					<table border='1' class="table table-hover">
+						<tr>
+							<td id="del" style="display:None;">Del</td>
+							<td>№</td>
+							<td>Номенклатура<button id="nomen">+</button></td>
+							<td>Серия номенклатуры</td>
+							<td>Количество</td>
+							<td>Единица измерения<button id="edinizmer">+</button></td>
+							<td>Коэффициент</td>
+							<td>Цена</td>
+							<td>% скидки или наценки</td>
+							<td>Сумма</td>
+							<td>% НДС</td>
+							<td>Сумма НДС</td>
+							<td>Всего</td>
+							<td>Документ партии</td>
+							<td>Себестоимость</td>
+							<td>Номер ГТД</td>
+							<td>Страна происхождения</td>
+							<td>Качество</td>
+							<td>% Авт. ск.</td>
+							<td>Условие автоматической скидки</td>
+							<td>Значение условия автоматической скидки</td>
+						</tr>
+						{% for mytovar in mytovary %}
+							<tr class="tovar">
+								<td id="del" style="display:None;">{{mytovar.PometkaUdaleniya}}</td>
+								<td><div id="id_subobj">{{mytovar.initial.id}}</div></td>
+								<td class="nomenklatura">{{mytovar.Nomenklatura}}</td>
+								<td>{{mytovar.SeriyaNomenklatury}}</td>
+								<td  class="Kolichestvo">{{mytovar.Kolichestvo}}</td>
+								<td>{{mytovar.EdinitsaIzmereniya}}</td>
+								<td>{{mytovar.Koeffitsient}}</td>
+								<td>{{mytovar.TSena}}</td>
+								<td>{{mytovar.ProtsentSkidkiNatsenki}}</td>
+								<td class="Summa">{{mytovar.Summa}}</td>
+								<td>{{mytovar.StavkaNDS}}</td>
+								<td class="SummaNDS">{{mytovar.SummaNDS}}</td>
+								<td></td>
+								<td class="selection">
+									<div id="vozvratTovarovOtPokupatelya">{{mytovar.DokumentPartiiVozvratTovarovOtPokupatelya}}</div>
+									<div id="prihodnyyOrderNaTovary">{{mytovar.DokumentPartiiPrihodnyyOrderNaTovary}}</div>
+									<div id="postuplenieTovarovUslugVNTT">{{mytovar.DokumentPartiiPostuplenieTovarovUslugVNTT}}</div>
+									<div id="oprihodovanieTovarov">{{mytovar.DokumentPartiiOprihodovanieTovarov}}</div>
+									<div id="postuplenieTovarovUslug">{{mytovar.DokumentPartiiPostuplenieTovarovUslug}}</div>
+									<div id="otchetORoznichnyhProdazhah">{{mytovar.DokumentPartiiOtchetORoznichnyhProdazhah}}</div>
+									<div id="realizatsiyaTovarovUslug">{{mytovar.DokumentPartiiRealizatsiyaTovarovUslug}}</div>
+									<div id="avansovyyOtchet">{{mytovar.DokumentPartiiAvansovyyOtchet}}</div>
+								</td>
+								<td>{{mytovar.Sebestoimost}}</td>
+								<td></td>
+								<td></td>
+								<td>{{mytovar.Kachestvo}}</td>
+								<td>{{mytovar.ProtsentAvtomaticheskihSkidok}}</td>
+								<td>{{mytovar.UslovieAvtomaticheskoySkidki}}</td>
+								<td>{{mytovar.ZnachenieUsloviyaAvtomaticheskoySkidkiint}}</td>
+							</tr>
+						{% endfor %}
+					</table>
+				</div>
+				<div role="tabpanel" class="tab-pane fade" id="dopolnitelno" aria-labelledby="dopolnitelno-tab">
+					<div class="form">
+						<p>Дисконтная карта: {{formVozvratTovarovOtPokupatelya.DiskontnayaKarta}}</p>
+						<p>Подразделение: {{formVozvratTovarovOtPokupatelya.Podrazdelenie}}<button  class="btn btn-default btn-xs" id="Podrazdelen">+</button></p>
+						<p>Ответственный: {{formVozvratTovarovOtPokupatelya.Otvetstvennyy}}</p>
+					</div>
+				</div>
+				<div role="tabpanel" class="tab-pane fade" id="nds" aria-labelledby="nds-tab"> 
+					<div class="form">
+						<p>{{formVozvratTovarovOtPokupatelya.PokupatelemVystavlyaetsyaSchetFakturaNaVozvrat}} Покупателем выставляется счет-фактура на возврат</p>
+						<p>{{formVozvratTovarovOtPokupatelya.OtrazitVKnigePokupok}} Отразить возврат в книге покупок</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="form">
+			<hr>
+			<p><label>Всего:<span id="summaObs"></span></label></p>
+            <p><label>НДС:<span id="ndsObs"></span></label></p>
+			<p>Комментарий: {{formVozvratTovarovOtPokupatelya.Kommentariy}}</p>
+		</div>
+		<button class="saveObj btn btn-default btn-xs">Сохранить объект</button>
+		</div>
+		<script src="{% static 'js/jquery-2.2.0.min.js' %}"></script>
+		<script src="{% static 'js/bootstrap.min.js' %}"></script>
+		<script src="{% static 'js/vozvrattovarovotpokupatelya.js' %}"></script>
+		<script type="text/javascript">
+		$( document ).ready(function() {
+
+			$('.token input').prop('readonly', true);
+
+			$.each($('body').find('.selection select'), function(){
+				if($(this).val()==''){
+					$(this).toggle();
+				}
+			});
+			$.each($('.selection'), function(){
+				var god = 0;
+				$.each($(this).find('select'), function(){
+					if($(this).val()!=''){
+						god = 1;
+					}
+				});
+				if(god==0){
+					$(this).append($('#addTovar div').parent().html());
+				}
+			});
+
+			$(".tovar select, .tovar input").on( "click", function() {
+				if($(this).closest('tr').attr('class')=='tovar'){
+					$(this).closest('tr').addClass('new');
+				}
+			});
+
+			$(".selection ul.dropdown-menu li a").on( "click", function() {
+				$(this).closest('td').find('#'+$(this).attr('class')+' select').toggle();
+				$(this).closest('td').find('.dropdown').toggle();
+			});
+
+			function ser(el) {
+			    var serialized = $(el).serialize();
+			    if (!serialized) // not a form
+			        serialized = $(el).find('input[name],select[name],textarea[name]').serialize();
+			    return serialized;
+			}
+			//work wth buttons
+			$(".add").on( "click", function() {
+				$(this).parent().find('tbody').append($("#addTovar").find('tbody').html());
+				$(".new ul.dropdown-menu li a").on( "click", function() {
+					$(this).closest('td').append($("#"+$(this).attr('class')).html());
+					$(this).closest('td').find('select').show();
+					$(this).closest('div').remove();
+				});
+			});
+			$(".del").on( "click", function() {
+				$(this).parent().find('table #del').toggle();
+			});
+			$(".save").on("click", function() {
+				var arr = [];
+				arr.push($(this).parent().attr('id'));
+				arr.push($('#id_obj').text());
+				arr.push($('#name_obj').text());
+				$.each($(this).parent().find('.new'), function(){
+					arr.push('id_subobj='+$(this).find('div#id_subobj').text()+'&'+ser(this));
+				});
+				$.ajax({
+					type: "POST",
+					url: '/saveSubobj/',
+					contentType: 'application/json; charset=utf-8',
+					data: JSON.stringify(arr),
+					success: function(data)
+					{
+						
+					}
+				});
+				$(this).parent().find('.new').removeClass('new');
+			});
+			$(".saveObj").on( "click", function() {
+				var arr = [];
+				arr.push($('#name_obj').text());
+				arr.push($('#id_obj').text());
+				arr.push(ser($('body').find('.form')));
+				$.ajax({
+					type: "POST",
+					url: '/saveObj/',
+					contentType: 'application/json; charset=utf-8',
+					data: JSON.stringify(arr),
+					success: function(data)
+					{
+						location.reload(true);
+					}
+				});
+			});
+		});
+		</script>
+		<script type="text/javascript">
+			$('#myTabs a').click(function (e) {
+				e.preventDefault();
+				$(this).tab('show');
+			})
+		</script>
+	</body>
+</html>

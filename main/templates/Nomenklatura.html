@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+	<title>Номенклатура</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<link rel="stylesheet" href="{% static 'css/style.css' %}">
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,400italic,700&subset=latin,cyrillic-ext' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet/less" type="text/css" href="{% static 'css/style.less'%}">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.0.0/less.js"></script>
+</head>
+</head>
+<body>
+	<div class="main-wrapper">
+	<div class="form">
+		<p style="display:none;" id="id_obj">{{ obj.id }}</p>
+        <p style="display:none;" id="name_obj">Nomenklatura</p>
+		<p><label>Группа:{{form.NomenklaturnayaGruppa}}</label></p>
+		<p><label>Наименование:{{ form.Naimenovanie }}</label><label class="token">Код:{{ form.Kod }}</label></p>
+		<p><label>Артикул:{{ form.Artikul }}</label><label>Вид номенклатуры:{{ form.VidNomenklatury }}</label><button id="VidNomenklatury">+</button></p>
+		<p><label>Базовая ед.:{{ form.BazovayaEdinitsaIzmereniya }}</label></p>
+		<p><label>Ед. хран. ост.:{{ form.EdinitsaHraneniyaOstatkov }}</label><label>{{ form.VestiUchetPoSeriyam }}Вести учет по сериям</label></p>
+		<p><label>Ед. для отчетов.:{{ form.EdinitsaDlyaOtchetov }}</label><label>{{ form.VestiPartionnyyUchetPoSeriyam }}Вести учет по сериям</label></p>
+		<p><label>Ед. мест:{{ form.EdinitsaIzmereniyaMest }}</label><label>{{ form.Vesovoy }}Весовой товар</label></p>
+		<p><label>Полное наименование:{{ form.NaimenovaniePolnoe }}</label></p>
+	</div>
+
+	<ul id="myTabs" class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#umolch" id="umolch-tab" role="tab" data-toggle="tab" aria-controls="umolch" aria-expanded="true">По умолчанию</a></li>
+        <li role="presentation"><a href="#edinitsy" id="edinitsy-tab" role="tab" data-toggle="tab" aria-controls="edinitsy" aria-expanded="true">Единицы</a></li>
+        <li role="presentation"><a href="#tsenyNomenklatury" id="tsenyNomenklatury-tab" role="tab" data-toggle="tab" aria-controls="tsenyNomenklatury" aria-expanded="true">Цены номенклатуры</a></li>
+    </ul>
+
+    <div id="myTabContent" class="tab-content">
+    	<div id="umolch" role="tabpanel" class="tab-pane fade in active" aria-labelledby="umolch-tab">
+    		<div class="form">
+    			<p><label>НДС:{{ form.StavkaNDS }}</label></p>
+    			<p><label>Страна:{{ form.StranaProishozhdeniya }}</label></p>
+    			<p><label>Номер ГТД:{{ form.NomerGTD }} </label><button id="NomerGTD">+</button></p>
+
+    			<span>Аналитика затрат</span>
+    			<p><label>Статья затрат:{{ form.StatyaZatrat }}</label><button id="StatyaZatrat">+</button></p>
+    			<p><label>Номенклатурная группа затрат:{{ form.NomenklaturnayaGruppaZatrat }}</label></p>
+    		</div>
+    	</div>
+    	<div id="edinitsy" role="tabpanel" class="tab-pane fade" aria-labelledby="edinitsy-tab">
+    		<button class="addEdinitsu btn btn-default btn-xs">Добавить</button>
+    		<table border="1" class="table table-hover">
+    			<tr>
+    				<td id="del" style="display:None;">Del</td>
+    				<td>№</td>
+    				<td>Код</td>
+    				<td>По классификатору</td>
+    				<td>Наименование</td>
+    				<td>K.</td>
+    				<td>Вес(кг)</td>
+    				<td>Объем</td>
+    			</tr>
+    			{% for edinitsa in edinitsy %}
+    				<tr class="tovar">
+    					<td><div id="id_subobj">{{edinitsa.id}}</div></td>
+    					<td>{{ edinitsa.Kod }}</td>
+	    				<td>{{ edinitsa.EdinitsaPoKlassifikatoru }}</td>
+	    				<td>{{ edinitsa.Naimenovanie }}</td>
+	    				<td>{{ edinitsa.Koeffitsient }}</td>
+	    				<td>{{ edinitsa.Ves }}</td>
+	    				<td>{{ edinitsa.Obem }}</td>
+    				</tr>
+    			{% endfor %}
+    		</table>
+    	</div>
+    	<div id="tsenyNomenklatury" role="tabpanel" class="tab-pane fade" aria-labelledby="tsenyNomenklatury-tab">
+    		<p>Документ установки цен: {{ formTipyTsen.UstanovkaTSenNomenklatury }}</p>
+    		<table border="1"  class="table table-hover">
+    			<tr>
+    				<td></td>
+    				<td>Тип цен</td>
+    				<td>Цена</td>
+    				<td>Способ расчета</td>
+    				<td>Валюта <button id="Valuta">+</button></td>
+    				<td>Ед.<button id="EdinitsaIzmereniy">+</button></td>
+    				<td>%Скидки(наценки)</td>
+    			</tr>
+    			{% for tip in mytipy %}
+    				<tr>
+    					<td><input type="checkbox" id="Chek" onclick="return false"></td>
+    					<td>{{ tip.Naimenovanie }}</td>
+    					<td><input type="number" name='Tsena' id="Tsena"></td>
+						<td>{{ tip.SposobRaschetaTSeny }}</td>
+						<td>{{ tip.ValyutaTSeny }}</td>
+						<td>{{ formTovaryIUslugi.EdinitsaIzmereniya }}</td>
+						<td>{{ tip.ProtsentSkidkiNatsenki }}</td>
+    				</tr>
+    			{% endfor %}
+    		</table>
+    		<button class="saveTseny btn btn-default btn-xs">Сохранить цены</button>
+    	</div>
+    </div>
+    <button class="saveObj btn btn-default btn-xs">Сохранить объект</button>
+    <button class="reload_window btn btn-default btn-xs" data-id="">Обновить страницу</button>
+   </div> 
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<script src="{% static 'js/docscript.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="{% static 'js/Nomenklatura.js' %}"></script>
+<script src="{% static 'js/localStorage.js' %}"></script>
+</body>
+</html>

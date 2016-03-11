@@ -1,0 +1,248 @@
+{% load staticfiles %}
+{% load verb %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Справочник</title>
+      	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+		<link rel="stylesheet" href="{% static 'css/style.css' %}">
+		<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,400italic,700&subset=latin,cyrillic-ext' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet/less" type="text/css" href="{% static 'css/style.less'%}">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.0.0/less.js"></script>
+    </head>
+    <body>
+    <div class="main-wrapper">    
+        <h1>{{ verb_name }}</h1>
+        <div class="form">
+            <p style="display:none;" id="id_obj">{{ obj.id }}</p>
+            <p style="display:none;" id="name_obj">Kontragenty</p>
+            <p class="token">Код: {{ formKontragenty.Kod }}</p>
+            <p>Наименование: {{ formKontragenty.Naimenovanie }}</p>
+            <p>Юр./Физ. лицо: {{ formKontragenty.YUrFizLitso }}</p>
+            <p>Нерезидент: {{ formKontragenty.NeYAvlyaetsyaRezidentom }}</p>
+            <p>Покупатель: {{ formKontragenty.Pokupatel }}</p>
+            <p>Поставщик: {{ formKontragenty.Postavschik }}</p>
+            <p>ОКОПФ: {{ formKontragenty.OKOPF }} <button id="OKOPF">+</button></p>
+            <p>Группа контрагентов: {{ formKontragenty.Roditel }}</p>
+            <p>Полное наименование: {{ formKontragenty.NaimenovaniePolnoe }}</p>
+            <p>ИНН: {{ formKontragenty.INN }}<button id="convert">=></button></p>
+            <p>КПП: {{ formKontragenty.KPP }}</p>
+            <p>Код по ОКПО: {{ formKontragenty.KodPoOKPO }}</p>
+            <p>Расписание работы: {{ formKontragenty.RaspisanieRabotyStrokoy }}</p>
+            <p>Регион: {{ formKontragenty.Region }} <button id="Region">+</button></p>
+            <p>Входит в холдинг: {{ formKontragenty.VhoditVHolding }}</p>
+            <p id='GolovnoyKontragent'>Головной контрагент: {{ formKontragenty.GolovnoyKontragent }}<button id="GolovnoyKontragen">+</button></p>
+            <p>Договоры контрагентов: </p>
+            <p>Основной договор: {{ formKontragenty.OsnovnoyDogovorKontragenta }} <button id="OsnovnoyDogovorKontragenta">+</button></p>
+            <p>Менеджер: {{ formKontragenty.OsnovnoyMenedzherPokupatelya }}</p>
+        </div>
+        <hr>
+        <div id="VidyDeyatelnosti">
+            <button class="add btn btn-default btn-xs">Добавить</button>
+            <button class="save btn btn-default btn-xs">Сохранить</button>
+            <button class="del btn btn-default btn-xs">Удалить</button>
+            <table border='1' class="table table-hover">
+                <tr>
+                    <td id="del" style="display:None;">Del</td>
+                    <td>№</td>
+                    <td>Вид оплаты</td>
+                    <td>Ответственный</td>
+                </tr>
+                {% for myvid in myvidy %}
+                    <tr class="tovar">
+                        <td id="del" style="display:None;">{{myvid.PometkaUdaleniya}}</td>
+                        <td><div id="id_subobj">{{myvid.initial.id}}</div></td>
+                        <td>{{myvid.VidDeyatelnosti}}</td>
+                        <td>{{myvid.Otvetstvennyy}}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <div class="form">
+                <p>Комментарий: {{ formKontragenty.Kommentariy }}</p>
+            </div>
+            <button class="saveObj btn btn-default btn-xs">Сохранить объект</button>
+            <button class="reload_window btn btn-default btn-xs" data-id="">Обновить страницу</button>
+        </div>
+        <table  class="table table-hover" style="display:none;" id="addTovar">
+            <tr class="new tovar">
+                <td>{{formVidyDeyatelnosti.id}}</td>
+                <td>{{formVidyDeyatelnosti.VidDeyatelnosti}}</td>
+                <td>{{formVidyDeyatelnosti.Otvetstvennyy}}</td>
+            </tr>
+        </table>
+    </div>    
+        <script src="{% static 'js/jquery-2.2.0.min.js' %}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+        <script src="{% static 'js/bootstrap.min.js' %}"></script>
+        <script type="text/javascript">
+        $( document ).ready(function() {
+
+            if($("#id_VhoditVHolding").is(':checked')){
+                $('#GolovnoyKontragent').show();
+            }else{
+                $('#GolovnoyKontragent').hide();
+                $('#GolovnoyKontragent option:first').attr('selected','1');
+            }
+
+            $("#id_VhoditVHolding").on( "change", function() {
+                if($(this).is(':checked')){
+                    $('#GolovnoyKontragent').show();
+                }else{
+                    $('#GolovnoyKontragent').hide();
+                    $('#GolovnoyKontragent option:first').attr('selected','1');
+                }
+            });
+
+            $("#convert").on( "click", function() {
+                $('#id_KPP').val($('#id_INN').val().substr(0, 4)+'01001');
+            });
+
+            $('#id_obj').prop('readonly', true);
+
+            $('.token input').prop('readonly', true);
+
+            $.each($('body').find('.selection select'), function(){
+                if($(this).val()==''){
+                    $(this).toggle();
+                }
+            });
+            $.each($('.selection'), function(){
+                var god = 0;
+                $.each($(this).find('select'), function(){
+                    if($(this).val()!=''){
+                        god = 1;
+                    }
+                });
+                if(god==0){
+                    $(this).append($('#addTovar div').parent().html());
+                }
+            });
+
+            $("#OKOPF").on( "click", function() {
+                window.open("/KlassifikatorOKOPF/new/");
+            });
+
+            $("#Region").on( "click", function() {
+                window.open("/Regiony/new/");
+            });
+            $("#GolovnoyKontragen").on( "click", function() {
+                window.open("/Kontragenty/new/");
+            });
+
+            $("#OsnovnoyDogovorKontragenta").on( "click", function() {
+                $.cookie('idKontragenty', String($('#id_obj').text()), {path: '/DogovoryKontragentov'});
+                window.open("/DogovoryKontragentov/new/");
+            });
+
+            $(".tovar select, .tovar input").on( "click", function() {
+                if($(this).closest('tr').attr('class')=='tovar'){
+                    $(this).closest('tr').addClass('new');
+                }
+            });
+
+            $(".selection ul.dropdown-menu li a").on( "click", function() {
+                $(this).closest('td').find('#'+$(this).attr('class')+' select').toggle();
+                $(this).closest('td').find('.dropdown').toggle();
+            });
+
+            function ser(el) {
+                var serialized = $(el).serialize();
+                if (!serialized) // not a form
+                    serialized = $(el).find('input[name],select[name],textarea[name]').serialize();
+                return decodeURIComponent(serialized.replace(/\+/gi, " "));
+            }
+            //work wth buttons
+            $(".add").on( "click", function() {
+                $(this).parent().find('tbody').append($("#addTovar").find('tbody').html());
+                $("ul.dropdown-menu li a").on( "click", function() {
+                    $(this).closest('td').append($("#"+$(this).attr('class')).html());
+                    $(this).closest('div').remove();
+                });
+            });
+            $(".del").on( "click", function() {
+                $(this).parent().find('table #del').toggle();
+            });
+
+            $(".save").on("click", function() {
+                var arr = [];
+                arr.push($(this).parent().attr('id'));
+                arr.push($('#id_obj').text());
+                arr.push($('#name_obj').text());
+                $.each($(this).parent().find('.new'), function(){
+                    arr.push('id_subobj='+$(this).find('div#id_subobj').text()+'&'+ser(this));
+                });
+                $.ajax({
+                    type: "POST",
+                    url: '/saveSubobj/',
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify(arr),
+                    success: function(data)
+                    {
+
+                    }
+                });
+                $(this).parent().find('.new').removeClass('new');
+            });
+            $(".saveObj").on( "click", function() {
+                var arr = [];
+                arr.push($('#name_obj').text());
+                arr.push($('#id_obj').text());
+                arr.push(ser($('body').find('.form')));
+                $.ajax({
+                    type: "POST",
+                    url: '/saveObj/',
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify(arr),
+                    success: function(data)
+                    {
+                        location.reload(true);
+                    }
+                });
+            });
+        });
+        </script>
+        <script type="text/javascript">
+            $('#myTabs a').click(function (e) {
+                e.preventDefault();
+                $(this).tab('show');
+            })
+        </script>
+        <script type="text/javascript">
+
+            $("#id_Naimenovanie").change(function() {
+                $('#id_NaimenovaniePolnoe').val($('#id_Naimenovanie').val());
+
+            });
+
+
+            $("#id_OKOPF").change(function() {
+                if($(this).val()!=''){
+                    $('#id_NaimenovaniePolnoe').val($('#id_OKOPF :selected').text()+' \"'+$('#id_Naimenovanie').val()+'\"');
+                }else{
+                    $('#id_NaimenovaniePolnoe').val($('#id_Naimenovanie').val());
+                }
+            });
+
+
+
+            $("#id_YUrFizLitso").change(function() {
+                if($('#id_YUrFizLitso :selected').text() == 'Физ. лицо'){
+                    $('#id_KPP').hide();
+                    $('#convert').hide();
+                    $('#id_KPP').parent().hide();
+
+                }
+                else{
+                    $('#id_KPP').show();
+                    $('#convert').show();
+                    $('#id_KPP').parent().show();
+                }
+
+            });
+        </script>
+        <script src="{% static 'js/localStorage.js' %}"></script>
+    </body>
+</html>

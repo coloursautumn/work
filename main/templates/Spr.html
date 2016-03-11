@@ -1,0 +1,98 @@
+{% load staticfiles %}
+{% load verb %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Справочник</title>
+		<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+		<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,400italic,700&subset=latin,cyrillic-ext' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet/less" type="text/css" href="{% static 'css/style.less'%}">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.0.0/less.js"></script>
+	</head>
+	<body>
+		<div class="main-wrapper">
+		<h1>{{verb_name}}</h1>
+		<div class="form">
+			{{ form.as_p }}
+		</div>
+		<button class="saveObj btn btn-default btn-xs" data-id="{{obj.id}}">Сохранить объект</button>
+		<button class="reload_window btn btn-default btn-xs" data-id="">Обновить страницу</button>
+
+
+		
+		<!-- <div class="modal fade" id="add-contact" tabindex="-1" role="dialog">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		      </div>
+		      	<h1 id="add_verb_plase">{{verb_name_contact}}</h1>
+		      <div class="modal-body add-contact-form" id='add_form_plase'>
+		       {{ contactform.as_p }}
+		       <p id="id_new_contact" style="display:none;"></p>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+		        <button type="button" class="btn btn-primary new-contact-btn" data-id="">Добавить контакт</button>
+		      </div>
+		    </div>
+		  </div>
+		</div> -->
+
+	</div>
+		<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+		<script src="{% static 'js/bootstrap.min.js' %}"></script>
+		
+<script type="text/javascript">
+		$( document ).ready(function() {
+
+			$('#id_Kod').prop('readonly', true);
+
+			function ser(el) {
+			    var serialized = $(el).serialize();
+			    if (!serialized) // not a form
+			        serialized = $(el).find('input[name],select[name],textarea[name]').serialize();
+			    return decodeURIComponent(serialized.replace(/\+/gi, " "));
+			}
+
+			function sendAjax(data) {
+				$.ajax({
+					type: "POST",
+					url: '/saveObj/',
+					contentType: 'application/json; charset=utf-8',
+					data: data,
+					success: function(data)
+					{
+						location.reload(true);
+					}
+				});
+			}
+
+			$(".saveObj").on("click", function() {
+				var arr = [];
+				arr.push(window.location.href.toString().split('/')[3]);
+				arr.push($(this).data('id'));
+				//arr.push($('#id_Kod').val().substr(2));
+				arr.push(ser($('body').find('.form')));
+				sendAjax(JSON.stringify(arr));
+			});
+
+		});
+
+		</script>
+		<script type="text/javascript">
+			$('#myTabs a').click(function (e) {
+				e.preventDefault();
+				$(this).tab('show');
+			})
+		</script>
+		<script src="{% static 'js/localStorage.js' %}"></script>
+		<script src="{% static 'js/' %}{{name_obj}}.js"></script>
+
+	</body>
+</html>
